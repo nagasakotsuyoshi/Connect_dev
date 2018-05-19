@@ -1,102 +1,142 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 using System.Collections;
 
 /// <summary>
-/// Every "drag and drop" item must contain this script
+/// Drag and Drop item.
 /// </summary>
-[RequireComponent(typeof(Image))]
 public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    static public DragAndDropItem draggedItem;                                      // Item that is dragged now
-    static public GameObject icon;                                                  // Icon of dragged item
-    static public DragAndDropCell sourceCell;                                       // From this cell dragged item is
+	public static bool dragDisabled = false;										// Drag start global disable
 
-    public delegate void DragEvent(DragAndDropItem item);
-    static public event DragEvent OnItemDragStartEvent;                             // Drag start event
-    static public event DragEvent OnItemDragEndEvent;                               // Drag end event
+	public static DragAndDropItem draggedItem;                                      // Item that is dragged now
+	public static GameObject icon;                                                  // Icon of dragged item
+	public static DragAndDropCell sourceCell;                                       // From this cell dragged item is
 
-    /// <summary>
-    /// This item is dragged
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        sourceCell = GetComponentInParent<DragAndDropCell>();                       // Remember source cell
-        draggedItem = this;                                                         // Set as dragged item
-        icon = new GameObject("Icon");                                              // Create object for item's icon
-        Image image = icon.AddComponent<Image>();
-        image.sprite = GetComponent<Image>().sprite;
-        image.raycastTarget = false;                                                // Disable icon's raycast for correct drop handling
-        RectTransform iconRect = icon.GetComponent<RectTransform>();
-        // Set icon's dimensions
-        iconRect.sizeDelta = new Vector2(   GetComponent<RectTransform>().sizeDelta.x,
-                                            GetComponent<RectTransform>().sizeDelta.y);
-        Canvas canvas = GetComponentInParent<Canvas>();                             // Get parent canvas
-        if (canvas != null)
-        {
-            // Display on top of all GUI (in parent canvas)
-            icon.transform.SetParent(canvas.transform, true);                       // Set canvas as parent
-            icon.transform.SetAsLastSibling();                                      // Set as last child in canvas transform
-        }
-        if (OnItemDragStartEvent != null)
-        {
-            OnItemDragStartEvent(this);                                             // Notify all about item drag start
-        }
-    }
+	public delegate void DragEvent(DragAndDropItem item);
+	public static event DragEvent OnItemDragStartEvent;                             // Drag start event
+	public static event DragEvent OnItemDragEndEvent;                               // Drag end event
 
-    /// <summary>
-    /// Every frame on this item drag
-    /// </summary>
-    /// <param name="data"></param>
-    public void OnDrag(PointerEventData data)
-    {
-        if (icon != null)
-        {
-            icon.transform.position = Input.mousePosition;                          // Item's icon follows to cursor
-        }
-    }
+	private static Canvas canvas;                                                   // Canvas for item drag operation
+	private static string canvasName = "DragAndDropCanvas";                   		// Name of canvas
+	private static int canvasSortOrder = 100;										// Sort order for canvas
 
-    /// <summary>
-    /// This item is dropped
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (icon != null)
-        {
-            Destroy(icon);                                                          // Destroy icon on item drop
-        }
-        MakeVisible(true);                                                          // Make item visible in cell
-        if (OnItemDragEndEvent != null)
-        {
-            OnItemDragEndEvent(this);                                               // Notify all cells about item drag end
-        }
-        draggedItem = null;
-        icon = null;
-        sourceCell = null;
-    }
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
+	void Awake()
+	{
+		if (canvas == null)
+		{
+			GameObject canvasObj = new GameObject(canvasName);
+			canvas = canvasObj.AddComponent<Canvas>();
+			canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+			canvas.sortingOrder = canvasSortOrder;
+		}
+	}
 
-    /// <summary>
-    /// Enable item's raycast
-    /// </summary>
-    /// <param name="condition"> true - enable, false - disable </param>
-    public void MakeRaycast(bool condition)
-    {
-        Image image = GetComponent<Image>();
-        if (image != null)
-        {
-            image.raycastTarget = condition;
-        }
-    }
+	/// <summary>
+	/// This item started to drag.
+	/// </summary>
+	/// <param name="eventData"></param>
+	public void OnBeginDrag(PointerEventData eventData)
+	{
+		if (dragDisabled == false)
+		{
+			sourceCell = GetCell();                       							// Remember source cell
+			draggedItem = this;                                             		// Set as dragged item
+			// Create item's icon
+			icon = new GameObject();
+			icon.transform.SetParent(canvas.transform);
+			icon.name = "Icon";
+			Image myImage = GetComponent<Image>();
+			myImage.raycastTarget = false;                                        	// Disable icon's raycast for correct drop handling
+			Image iconImage = icon.AddComponent<Image>();
+			iconImage.raycastTarget = false;
+			iconImage.sprite = myImage.sprite;
+			RectTransform iconRect = icon.GetComponent<RectTransform>();
+			// Set icon's dimensions
+			RectTransform myRect = GetComponent<RectTransform>();
+			iconRect.pivot = new Vector2(0.5f, 0.5f);
+			iconRect.anchorMin = new Vector2(0.5f, 0.5f);
+			iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+			iconRect.sizeDelta = new Vector2(myRect.rect.width, myRect.rect.height);
 
-    /// <summary>
-    /// Enable item's visibility
-    /// </summary>
-    /// <param name="condition"> true - enable, false - disable </param>
-    public void MakeVisible(bool condition)
-    {
-        GetComponent<Image>().enabled = condition;
-    }
+			if (OnItemDragStartEvent != null)
+			{
+				OnItemDragStartEvent(this);                                			// Notify all items about drag start for raycast disabling
+			}
+		}
+	}
+
+	/// <summary>
+	/// Every frame on this item drag.
+	/// </summary>
+	/// <param name="data"></param>
+	public void OnDrag(PointerEventData data)
+	{
+		if (icon != null)
+		{
+			icon.transform.position = Input.mousePosition;                          // Item's icon follows to cursor in screen pixels
+		}
+	}
+
+	/// <summary>
+	/// This item is dropped.
+	/// </summary>
+	/// <param name="eventData"></param>
+	public void OnEndDrag(PointerEventData eventData)
+	{
+		ResetConditions();
+	}
+
+	/// <summary>
+	/// Resets all temporary conditions.
+	/// </summary>
+	private void ResetConditions()
+	{
+		if (icon != null)
+		{
+			Destroy(icon);                                                          // Destroy icon on item drop
+		}
+		if (OnItemDragEndEvent != null)
+		{
+			OnItemDragEndEvent(this);                                       		// Notify all cells about item drag end
+		}
+		draggedItem = null;
+		icon = null;
+		sourceCell = null;
+	}
+
+	/// <summary>
+	/// Enable item's raycast.
+	/// </summary>
+	/// <param name="condition"> true - enable, false - disable </param>
+	public void MakeRaycast(bool condition)
+	{
+		Image image = GetComponent<Image>();
+		if (image != null)
+		{
+			image.raycastTarget = condition;
+		}
+	}
+
+	/// <summary>
+	/// Gets DaD cell which contains this item.
+	/// </summary>
+	/// <returns>The cell.</returns>
+	public DragAndDropCell GetCell()
+	{
+		return GetComponentInParent<DragAndDropCell>();
+	}
+
+	/// <summary>
+	/// Raises the disable event.
+	/// </summary>
+	void OnDisable()
+	{
+		ResetConditions();
+	}
 }

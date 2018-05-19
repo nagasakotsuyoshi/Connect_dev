@@ -9,40 +9,54 @@ using System.Collections;
 [RequireComponent(typeof(Image))]
 public class DragAndDropCell : MonoBehaviour, IDropHandler
 {
-    public enum CellType
+    public enum CellType                                                    // Cell types
     {
-        Swap,                                                               // Items will be swapped between cells
+        Swap,                                                               // Items will be swapped between any cells
         DropOnly,                                                           // Item will be dropped into cell
-        DragOnly,                                                           // Item will be dragged from this cell
-        UnlimitedSource                                                     // Item will be cloned and dragged from this cell
+        DragOnly                                                            // Item will be dragged from this cell
     }
-    public CellType cellType = CellType.Swap;                               // Special type of this cell
 
-    public struct DropDescriptor                                            // Struct with info about item's drop event
+    public enum TriggerType                                                 // Types of drag and drop events
     {
+        DropRequest,                                                        // Request for item drop from one cell to another
+        DropEventEnd,                                                       // Drop event completed
+        ItemAdded,                                                          // Item manualy added into cell
+        ItemWillBeDestroyed                                                 // Called just before item will be destroyed
+    }
+
+    public class DropEventDescriptor                                        // Info about item's drop event
+    {
+        public TriggerType triggerType;                                     // Type of drag and drop trigger
         public DragAndDropCell sourceCell;                                  // From this cell item was dragged
         public DragAndDropCell destinationCell;                             // Into this cell item was dropped
-        public DragAndDropItem item;                                        // dropped item
+        public DragAndDropItem item;                                        // Dropped item
+        public bool permission;                                             // Decision need to be made on request
     }
 
+	[Tooltip("Functional type of this cell")]
+    public CellType cellType = CellType.Swap;                               // Special type of this cell
+	[Tooltip("Sprite color for empty cell")]
     public Color empty = new Color();                                       // Sprite color for empty cell
+	[Tooltip("Sprite color for filled cell")]
     public Color full = new Color();                                        // Sprite color for filled cell
+	[Tooltip("This cell has unlimited amount of items")]
+    public bool unlimitedSource = false;                                    // Item from this cell will be cloned on drag start
+
+	private DragAndDropItem myDadItem;										// Item of this DaD cell
 
     void OnEnable()
     {
         DragAndDropItem.OnItemDragStartEvent += OnAnyItemDragStart;         // Handle any item drag start
         DragAndDropItem.OnItemDragEndEvent += OnAnyItemDragEnd;             // Handle any item drag end
+		UpdateMyItem();
+		UpdateBackgroundState();
     }
 
     void OnDisable()
     {
         DragAndDropItem.OnItemDragStartEvent -= OnAnyItemDragStart;
         DragAndDropItem.OnItemDragEndEvent -= OnAnyItemDragEnd;
-    }
-
-    void Start()
-    {
-        SetBackgroundState(GetComponentInChildren<DragAndDropItem>() == null ? false : true);
+        StopAllCoroutines();                                                // Stop all coroutines if there is any
     }
 
     /// <summary>
@@ -51,24 +65,17 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
     /// <param name="item"> dragged item </param>
     private void OnAnyItemDragStart(DragAndDropItem item)
     {
-        DragAndDropItem myItem = GetComponentInChildren<DragAndDropItem>(); // Get item from current cell
-        if (myItem != null)
+		UpdateMyItem();
+		if (myDadItem != null)
         {
-            myItem.MakeRaycast(false);                                      // Disable item's raycast for correct drop handling
-            if (myItem == item)                                             // If item dragged from this cell
+			myDadItem.MakeRaycast(false);                                  	// Disable item's raycast for correct drop handling
+			if (myDadItem == item)                                         	// If item dragged from this cell
             {
                 // Check cell's type
                 switch (cellType)
                 {
                     case CellType.DropOnly:
-                        DragAndDropItem.icon.SetActive(false);              // Item will not be dropped
-                        break;
-                    case CellType.UnlimitedSource:
-                        // Nothing to do
-                        break;
-                    default:
-                        item.MakeVisible(false);                            // Hide item in cell till dragging
-                        SetBackgroundState(false);
+                        DragAndDropItem.icon.SetActive(false);              // Item can not be dragged. Hide icon
                         break;
                 }
             }
@@ -81,19 +88,12 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
     /// <param name="item"> dragged item </param>
     private void OnAnyItemDragEnd(DragAndDropItem item)
     {
-        DragAndDropItem myItem = GetComponentInChildren<DragAndDropItem>(); // Get item from current cell
-        if (myItem != null)
+		UpdateMyItem();
+		if (myDadItem != null)
         {
-            if (myItem == item)
-            {
-                SetBackgroundState(true);
-            }
-            myItem.MakeRaycast(true);                                       // Enable item's raycast
+			myDadItem.MakeRaycast(true);                                  	// Enable item's raycast
         }
-        else
-        {
-            SetBackgroundState(false);
-        }
+		UpdateBackgroundState();
     }
 
     /// <summary>
@@ -104,167 +104,282 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
     {
         if (DragAndDropItem.icon != null)
         {
-            if (DragAndDropItem.icon.activeSelf == true)                    // If icon inactive do not need to drop item in cell
+            DragAndDropItem item = DragAndDropItem.draggedItem;
+            DragAndDropCell sourceCell = DragAndDropItem.sourceCell;
+            if (DragAndDropItem.icon.activeSelf == true)                    // If icon inactive do not need to drop item into cell
             {
-                DragAndDropItem item = DragAndDropItem.draggedItem;
-                DragAndDropCell sourceCell = DragAndDropItem.sourceCell;
-                DropDescriptor desc = new DropDescriptor();
                 if ((item != null) && (sourceCell != this))
                 {
-                    switch (sourceCell.cellType)                            // Check source cell's type
-                    {
-                        case CellType.UnlimitedSource:
-                            string itemName = item.name;
-                            item = Instantiate(item);                       // Clone item from source cell
-                            item.name = itemName;
-                            break;
-                        default:
-                            // Nothing to do
-                            break;
-                    }
+                    DropEventDescriptor desc = new DropEventDescriptor();
                     switch (cellType)                                       // Check this cell's type
                     {
-                        case CellType.Swap:
-                            DragAndDropItem currentItem = GetComponentInChildren<DragAndDropItem>();
+                        case CellType.Swap:                                 // Item in destination cell can be swapped
+							UpdateMyItem();
                             switch (sourceCell.cellType)
                             {
-                                case CellType.Swap:
-                                    SwapItems(sourceCell, this);            // Swap items between cells
+                                case CellType.Swap:                         // Item in source cell can be swapped
                                     // Fill event descriptor
                                     desc.item = item;
                                     desc.sourceCell = sourceCell;
                                     desc.destinationCell = this;
-                                    // Send message with DragAndDrop info to parents GameObjects
-                                    StartCoroutine(NotifyOnDragEnd(desc));
-                                    if (currentItem != null)
+                                    SendRequest(desc);                      // Send drop request
+                                    StartCoroutine(NotifyOnDragEnd(desc));  // Send notification after drop will be finished
+                                    if (desc.permission == true)            // If drop permitted by application
                                     {
-                                        // Fill event descriptor
-                                        desc.item = currentItem;
-                                        desc.sourceCell = this;
-                                        desc.destinationCell = sourceCell;
-                                        // Send message with DragAndDrop info to parents GameObjects
-                                        StartCoroutine(NotifyOnDragEnd(desc));
+										if (myDadItem != null)            // If destination cell has item
+                                        {
+                                            // Fill event descriptor
+                                            DropEventDescriptor descAutoswap = new DropEventDescriptor();
+											descAutoswap.item = myDadItem;
+                                            descAutoswap.sourceCell = this;
+                                            descAutoswap.destinationCell = sourceCell;
+                                            SendRequest(descAutoswap);                      // Send drop request
+                                            StartCoroutine(NotifyOnDragEnd(descAutoswap));  // Send notification after drop will be finished
+                                            if (descAutoswap.permission == true)            // If drop permitted by application
+                                            {
+                                                SwapItems(sourceCell, this);                // Swap items between cells
+                                            }
+                                            else
+                                            {
+												PlaceItem(item);            // Delete old item and place dropped item into this cell
+                                            }
+                                        }
+                                        else
+                                        {
+											PlaceItem(item);                // Place dropped item into this empty cell
+                                        }
                                     }
                                     break;
-                                default:
-                                    PlaceItem(item.gameObject);             // Place dropped item in this cell
+                                default:                                    // Item in source cell can not be swapped
                                     // Fill event descriptor
                                     desc.item = item;
                                     desc.sourceCell = sourceCell;
                                     desc.destinationCell = this;
-                                    // Send message with DragAndDrop info to parents GameObjects
-                                    StartCoroutine(NotifyOnDragEnd(desc));
+                                    SendRequest(desc);                      // Send drop request
+                                    StartCoroutine(NotifyOnDragEnd(desc));  // Send notification after drop will be finished
+                                    if (desc.permission == true)            // If drop permitted by application
+                                    {
+										PlaceItem(item);                    // Place dropped item into this cell
+                                    }
                                     break;
                             }
                             break;
-                        case CellType.DropOnly:
-                            PlaceItem(item.gameObject);                     // Place dropped item in this cell
+                        case CellType.DropOnly:                             // Item only can be dropped into destination cell
                             // Fill event descriptor
                             desc.item = item;
                             desc.sourceCell = sourceCell;
                             desc.destinationCell = this;
-                            // Send message with DragAndDrop info to parents GameObjects
-                            StartCoroutine(NotifyOnDragEnd(desc));
+                            SendRequest(desc);                              // Send drop request
+                            StartCoroutine(NotifyOnDragEnd(desc));          // Send notification after drop will be finished
+                            if (desc.permission == true)                    // If drop permitted by application
+                            {
+								PlaceItem(item);                            // Place dropped item in this cell
+                            }
                             break;
                         default:
-                            // Nothing to do
                             break;
                     }
                 }
+            }
+            if (item != null)
+            {
                 if (item.GetComponentInParent<DragAndDropCell>() == null)   // If item have no cell after drop
                 {
                     Destroy(item.gameObject);                               // Destroy it
                 }
             }
+			UpdateMyItem();
+			UpdateBackgroundState();
+			sourceCell.UpdateMyItem();
+			sourceCell.UpdateBackgroundState();
         }
     }
 
-    /// <summary>
-    /// Change cell's sprite color on item put/remove
-    /// </summary>
-    /// <param name="condition"> true - filled, false - empty </param>
-    private void SetBackgroundState(bool condition)
-    {
-        GetComponent<Image>().color = condition ? full : empty;
-    }
+	/// <summary>
+	/// Put item into this cell.
+	/// </summary>
+	/// <param name="item">Item.</param>
+	private void PlaceItem(DragAndDropItem item)
+	{
+		if (item != null)
+		{
+			DestroyItem();                                            	// Remove current item from this cell
+			myDadItem = null;
+			DragAndDropCell cell = item.GetComponentInParent<DragAndDropCell>();
+			if (cell != null)
+			{
+				if (cell.unlimitedSource == true)
+				{
+					string itemName = item.name;
+					item = Instantiate(item);                               // Clone item from source cell
+					item.name = itemName;
+				}
+			}
+			item.transform.SetParent(transform, false);
+			item.transform.localPosition = Vector3.zero;
+			item.MakeRaycast(true);
+			myDadItem = item;
+		}
+		UpdateBackgroundState();
+	}
 
     /// <summary>
-    /// Delete item from this cell
+    /// Destroy item in this cell
     /// </summary>
-    public void RemoveItem()
+    private void DestroyItem()
     {
-        foreach (DragAndDropItem item in GetComponentsInChildren<DragAndDropItem>())
+		UpdateMyItem();
+		if (myDadItem != null)
         {
-            Destroy(item.gameObject);
+            DropEventDescriptor desc = new DropEventDescriptor();
+            // Fill event descriptor
+            desc.triggerType = TriggerType.ItemWillBeDestroyed;
+			desc.item = myDadItem;
+            desc.sourceCell = this;
+            desc.destinationCell = this;
+            SendNotification(desc);                                         // Notify application about item destruction
+			if (myDadItem != null)
+			{
+				Destroy(myDadItem.gameObject);
+			}
         }
-        SetBackgroundState(false);
+		myDadItem = null;
+		UpdateBackgroundState();
     }
 
     /// <summary>
-    /// Put new item in this cell
+    /// Send drag and drop information to application
     /// </summary>
-    /// <param name="itemObj"> New item's object with DragAndDropItem script </param>
-    public void PlaceItem(GameObject itemObj)
+    /// <param name="desc"> drag and drop event descriptor </param>
+    private void SendNotification(DropEventDescriptor desc)
     {
-        RemoveItem();                                                       // Remove current item from this cell
-        if (itemObj != null)
+        if (desc != null)
         {
-            itemObj.transform.SetParent(transform, false);
-            itemObj.transform.localPosition = Vector3.zero;
-            DragAndDropItem item = itemObj.GetComponent<DragAndDropItem>();
-            if (item != null)
-            {
-                item.MakeRaycast(true);
-            }
-            SetBackgroundState(true);
+            // Send message with DragAndDrop info to parents GameObjects
+            gameObject.SendMessageUpwards("OnSimpleDragAndDropEvent", desc, SendMessageOptions.DontRequireReceiver);
         }
     }
 
     /// <summary>
-    /// Get item from this cell
+    /// Send drag and drop request to application
     /// </summary>
-    /// <returns> Item </returns>
-    public DragAndDropItem GetItem()
+    /// <param name="desc"> drag and drop event descriptor </param>
+    /// <returns> result from desc.permission </returns>
+    private bool SendRequest(DropEventDescriptor desc)
     {
-        return GetComponentInChildren<DragAndDropItem>();
-    }
-
-    /// <summary>
-    /// Swap items between to cells
-    /// </summary>
-    /// <param name="firstCell"> Cell </param>
-    /// <param name="secondCell"> Cell </param>
-    public void SwapItems(DragAndDropCell firstCell, DragAndDropCell secondCell)
-    {
-        if ((firstCell != null) && (secondCell != null))
+        bool result = false;
+        if (desc != null)
         {
-            DragAndDropItem firstItem = firstCell.GetItem();                // Get item from first cell
-            DragAndDropItem secondItem = secondCell.GetItem();              // Get item from second cell
-            if (firstItem != null)
-            {
-                // Place first item into second cell
-                firstItem.transform.SetParent(secondCell.transform, false);
-                firstItem.transform.localPosition = Vector3.zero;
-                secondCell.SetBackgroundState(true);
-            }
-            if (secondItem != null)
-            {
-                // Place second item into first cell
-                secondItem.transform.SetParent(firstCell.transform, false);
-                secondItem.transform.localPosition = Vector3.zero;
-                firstCell.SetBackgroundState(true);
-            }
+            desc.triggerType = TriggerType.DropRequest;
+            desc.permission = true;
+            SendNotification(desc);
+            result = desc.permission;
         }
+        return result;
     }
 
-    private IEnumerator NotifyOnDragEnd(DropDescriptor desc)
+    /// <summary>
+    /// Wait for event end and send notification to application
+    /// </summary>
+    /// <param name="desc"> drag and drop event descriptor </param>
+    /// <returns></returns>
+    private IEnumerator NotifyOnDragEnd(DropEventDescriptor desc)
     {
         // Wait end of drag operation
         while (DragAndDropItem.draggedItem != null)
         {
             yield return new WaitForEndOfFrame();
         }
-        // Send message with DragAndDrop info to parents GameObjects
-        gameObject.SendMessageUpwards("OnItemPlace", desc, SendMessageOptions.DontRequireReceiver);
+        desc.triggerType = TriggerType.DropEventEnd;
+        SendNotification(desc);
     }
+
+	/// <summary>
+	/// Change cell's sprite color on item put/remove.
+	/// </summary>
+	/// <param name="condition"> true - filled, false - empty </param>
+	public void UpdateBackgroundState()
+	{
+		Image bg = GetComponent<Image>();
+		if (bg != null)
+		{
+			bg.color = myDadItem != null ? full : empty;
+		}
+	}
+
+	/// <summary>
+	/// Updates my item
+	/// </summary>
+	public void UpdateMyItem()
+	{
+		myDadItem = GetComponentInChildren<DragAndDropItem>();
+	}
+
+	/// <summary>
+	/// Get item from this cell
+	/// </summary>
+	/// <returns> Item </returns>
+	public DragAndDropItem GetItem()
+	{
+		return myDadItem;
+	}
+
+    /// <summary>
+    /// Manualy add item into this cell
+    /// </summary>
+    /// <param name="newItem"> New item </param>
+    public void AddItem(DragAndDropItem newItem)
+    {
+        if (newItem != null)
+        {
+			PlaceItem(newItem);
+            DropEventDescriptor desc = new DropEventDescriptor();
+            // Fill event descriptor
+            desc.triggerType = TriggerType.ItemAdded;
+            desc.item = newItem;
+            desc.sourceCell = this;
+            desc.destinationCell = this;
+            SendNotification(desc);
+        }
+    }
+
+    /// <summary>
+    /// Manualy delete item from this cell
+    /// </summary>
+    public void RemoveItem()
+    {
+        DestroyItem();
+    }
+
+	/// <summary>
+	/// Swap items between two cells
+	/// </summary>
+	/// <param name="firstCell"> Cell </param>
+	/// <param name="secondCell"> Cell </param>
+	public void SwapItems(DragAndDropCell firstCell, DragAndDropCell secondCell)
+	{
+		if ((firstCell != null) && (secondCell != null))
+		{
+			DragAndDropItem firstItem = firstCell.GetItem();                // Get item from first cell
+			DragAndDropItem secondItem = secondCell.GetItem();              // Get item from second cell
+			// Swap items
+			if (firstItem != null)
+			{
+				firstItem.transform.SetParent(secondCell.transform, false);
+				firstItem.transform.localPosition = Vector3.zero;
+				firstItem.MakeRaycast(true);
+			}
+			if (secondItem != null)
+			{
+				secondItem.transform.SetParent(firstCell.transform, false);
+				secondItem.transform.localPosition = Vector3.zero;
+				secondItem.MakeRaycast(true);
+			}
+			// Update states
+			firstCell.UpdateMyItem();
+			secondCell.UpdateMyItem();
+			firstCell.UpdateBackgroundState();
+			secondCell.UpdateBackgroundState();
+		}
+	}
 }
