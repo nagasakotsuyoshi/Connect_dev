@@ -7,7 +7,7 @@ using System.Collections;
 /// <summary>
 /// Drag and Drop item.
 /// </summary>
-public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler//ドラッグ開始前の状態、ドラック中、ドラック後のメソッドがある
 {
 	public static bool dragDisabled = false;										// Drag start global disable
 
@@ -45,7 +45,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	{
 		if (dragDisabled == false)
 		{
-			sourceCell = GetCell();                       							// Remember source cell
+			sourceCell = GetCell();                       							// Remember source cell　セルの場所を把握
 			draggedItem = this;                                             		// Set as dragged item
 			// Create item's icon
 			icon = new GameObject();
