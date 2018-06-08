@@ -50,21 +50,24 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 			// Create item's icon
 			icon = new GameObject();
 			icon.transform.SetParent(canvas.transform);
+
 			icon.name = "Icon";
 			Image myImage = GetComponent<Image>();
 			myImage.raycastTarget = false;                                        	// Disable icon's raycast for correct drop handling
 			Image iconImage = icon.AddComponent<Image>();
 			iconImage.raycastTarget = false;
-			iconImage.sprite = myImage.sprite;
+			iconImage.sprite = myImage.sprite;                                      //画像データをコピー
 			RectTransform iconRect = icon.GetComponent<RectTransform>();
-			// Set icon's dimensions
-			RectTransform myRect = GetComponent<RectTransform>();
+
+            Debug.Log(iconRect.rect.position.x);
+            // Set icon's dimensions
+            RectTransform myRect = GetComponent<RectTransform>();
 			iconRect.pivot = new Vector2(0.5f, 0.5f);
 			iconRect.anchorMin = new Vector2(0.5f, 0.5f);
 			iconRect.anchorMax = new Vector2(0.5f, 0.5f);
-			iconRect.sizeDelta = new Vector2(myRect.rect.width, myRect.rect.height);
+			iconRect.sizeDelta = new Vector2(120, 180);
 
-			if (OnItemDragStartEvent != null)
+            if (OnItemDragStartEvent != null)
 			{
 				OnItemDragStartEvent(this);                                			// Notify all items about drag start for raycast disabling
 			}
@@ -81,7 +84,8 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 		{
 			icon.transform.position = Input.mousePosition;                          // Item's icon follows to cursor in screen pixels
 		}
-	}
+
+    }
 
 	/// <summary>
 	/// This item is dropped.
