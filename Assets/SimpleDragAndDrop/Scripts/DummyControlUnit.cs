@@ -11,7 +11,7 @@ public class DummyControlUnit:MonoBehaviour
     /// Operate all drag and drop requests and events from children cells
     /// </summary>
     /// <param name="desc"> request or event descriptor </param>
-    void OnSimpleDragAndDropEvent(DragAndDropCell.DropEventDescriptor desc)
+    void OnSimpleDragAndDropEvent(DragAndDropCell.DropEventDescriptor desc)//引数 descは
     {
         // Get control unit of source cell
         DummyControlUnit sourceSheet = desc.sourceCell.GetComponentInParent<DummyControlUnit>();
