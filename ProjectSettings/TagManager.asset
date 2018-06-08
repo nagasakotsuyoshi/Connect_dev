@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: stage
+    uniqueID: 251654309
+    locked: 0
+  - name: cells
+    uniqueID: 3525574777
+    locked: 0
+  - name: cards
+    uniqueID: 247336329
+    locked: 0

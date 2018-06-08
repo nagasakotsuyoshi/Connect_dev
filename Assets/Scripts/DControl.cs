@@ -5,24 +5,24 @@ using System.Collections;
 /// <summary>
 /// Example of control application for drag and drop events handle
 /// </summary>
-public class DummyControlUnit:MonoBehaviour
+public class DControl : MonoBehaviour
 {
     /// <summary>
     /// Operate all drag and drop requests and events from children cells
     /// </summary>
     /// <param name="desc"> request or event descriptor </param>
-    void OnSimpleDragAndDropEvent(DragAndDropCell.DropEventDescriptor desc)
+    void OnSimpleDragAndDropEvent(DADCell.DropEventDescriptor desc)
     {
         // Get control unit of source cell
-        DummyControlUnit sourceSheet = desc.sourceCell.GetComponentInParent<DummyControlUnit>();
+        DControl sourceSheet = desc.sourceCell.GetComponentInParent<DControl>();
         // Get control unit of destination cell
-        DummyControlUnit destinationSheet = desc.destinationCell.GetComponentInParent<DummyControlUnit>();
+        DControl destinationSheet = desc.destinationCell.GetComponentInParent<DControl>();
         switch (desc.triggerType)                                               // What type event is?
         {
-            case DragAndDropCell.TriggerType.DropRequest:                       // Request for item drag (note: do not destroy item on request)
+            case DADCell.TriggerType.DropRequest:                       // Request for item drag (note: do not destroy item on request)
                 Debug.Log("Request " + desc.item.name + " from " + sourceSheet.name + " to " + destinationSheet.name);
                 break;
-            case DragAndDropCell.TriggerType.DropEventEnd:                      // Drop event completed (successful or not)
+            case DADCell.TriggerType.DropEventEnd:                      // Drop event completed (successful or not)
                 if (desc.permission == true)                                    // If drop successful (was permitted before)
                 {
                     Debug.Log("Successful drop " + desc.item.name + " from " + sourceSheet.name + " to " + destinationSheet.name);
@@ -32,10 +32,10 @@ public class DummyControlUnit:MonoBehaviour
                     Debug.Log("Denied drop " + desc.item.name + " from " + sourceSheet.name + " to " + destinationSheet.name);
                 }
                 break;
-            case DragAndDropCell.TriggerType.ItemAdded:                         // New item is added from application
+            case DADCell.TriggerType.ItemAdded:                         // New item is added from application
                 Debug.Log("Item " + desc.item.name + " added into " + destinationSheet.name);
                 break;
-            case DragAndDropCell.TriggerType.ItemWillBeDestroyed:               // Called before item be destructed (can not be canceled)
+            case DADCell.TriggerType.ItemWillBeDestroyed:               // Called before item be destructed (can not be canceled)
                 Debug.Log("Item " + desc.item.name + " will be destroyed from " + sourceSheet.name);
                 break;
             default:
@@ -48,15 +48,15 @@ public class DummyControlUnit:MonoBehaviour
     /// Add item in first free cell
     /// </summary>
     /// <param name="item"> new item </param>
-    public void AddItemInFreeCell(DragAndDropItem item)
+    public void AddItemInFreeCell(DADItem item)
     {
-        foreach (DragAndDropCell cell in GetComponentsInChildren<DragAndDropCell>())
+        foreach (DADCell cell in GetComponentsInChildren<DADCell>())
         {
             if (cell != null)
             {
-				if (cell.GetItem() == null)
+                if (cell.GetItem() == null)
                 {
-                    cell.AddItem(Instantiate(item.gameObject).GetComponent<DragAndDropItem>());
+                    cell.AddItem(Instantiate(item.gameObject).GetComponent<DADItem>());
                     break;
                 }
             }
@@ -68,11 +68,11 @@ public class DummyControlUnit:MonoBehaviour
     /// </summary>
     public void RemoveFirstItem()
     {
-        foreach (DragAndDropCell cell in GetComponentsInChildren<DragAndDropCell>())
+        foreach (DADCell cell in GetComponentsInChildren<DADCell>())
         {
             if (cell != null)
             {
-				if (cell.GetItem() != null)
+                if (cell.GetItem() != null)
                 {
                     cell.RemoveItem();
                     break;
