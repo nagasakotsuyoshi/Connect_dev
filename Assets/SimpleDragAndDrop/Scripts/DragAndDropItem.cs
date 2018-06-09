@@ -58,8 +58,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 			iconImage.raycastTarget = false;
 			iconImage.sprite = myImage.sprite;                                      //画像データをコピー
 			RectTransform iconRect = icon.GetComponent<RectTransform>();
-
-            Debug.Log(iconRect.rect.position.x);
+            
             // Set icon's dimensions
             RectTransform myRect = GetComponent<RectTransform>();
 			iconRect.pivot = new Vector2(0.5f, 0.5f);
@@ -67,8 +66,8 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 			iconRect.anchorMax = new Vector2(0.5f, 0.5f);
 			iconRect.sizeDelta = new Vector2(myRect.rect.width, myRect.rect.height);
 
-            if (OnItemDragStartEvent != null)
-			{
+            if (OnItemDragStartEvent != null)                                       //DragAndDropCellのOnAnyItemDragStartメソッドを実行させるかどうか
+            {
 				OnItemDragStartEvent(this);                                			// Notify all items about drag start for raycast disabling
 			}
 		}
@@ -78,7 +77,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	/// Every frame on this item drag.
 	/// </summary>
 	/// <param name="data"></param>
-	public void OnDrag(PointerEventData data)
+	public void OnDrag(PointerEventData data)                                       //引数はマウス／タッチを行ったときに関連する情報のデータ
 	{
 		if (icon != null)
 		{

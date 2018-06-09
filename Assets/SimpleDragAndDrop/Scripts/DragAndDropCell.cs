@@ -8,7 +8,7 @@ using System.Collections;
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class DragAndDropCell : MonoBehaviour, IDropHandler
-{
+{  
     public enum CellType                                                    // Cell types
     {
         Swap,                                                               // Items will be swapped between any cells
@@ -44,7 +44,7 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 
 	private DragAndDropItem myDadItem;										// Item of this DaD cell
 
-    void OnEnable()
+    void OnEnable()                                                         //インスタンス生成時に実行、オブジェクトが画面に表示された時のことをアクティブ（有効）という
     {
         DragAndDropItem.OnItemDragStartEvent += OnAnyItemDragStart;         // Handle any item drag start
         DragAndDropItem.OnItemDragEndEvent += OnAnyItemDragEnd;             // Handle any item drag end
@@ -54,6 +54,7 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 
     void OnDisable()
     {
+        Debug.Log("disable");
         DragAndDropItem.OnItemDragStartEvent -= OnAnyItemDragStart;
         DragAndDropItem.OnItemDragEndEvent -= OnAnyItemDragEnd;
         StopAllCoroutines();                                                // Stop all coroutines if there is any
@@ -75,7 +76,7 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
                 switch (cellType)
                 {
                     case CellType.DropOnly:
-                        DragAndDropItem.icon.SetActive(false);              // Item can not be dragged. Hide icon
+                        DragAndDropItem.icon.SetActive(false);              // Item can not be dragged. Hide icon　非アクティブにする
                         break;
                 }
             }
