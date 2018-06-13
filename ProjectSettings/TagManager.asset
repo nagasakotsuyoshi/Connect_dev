@@ -50,3 +50,6 @@ TagManager:
   - name: cards
     uniqueID: 247336329
     locked: 0
+  - name: Items
+    uniqueID: 3421057871
+    locked: 0
