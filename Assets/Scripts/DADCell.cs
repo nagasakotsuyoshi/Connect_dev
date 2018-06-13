@@ -6,7 +6,7 @@ using System.Collections;
 /// <summary>
 /// Every item's cell must contain this script
 /// </summary>
-[RequireComponent(typeof(Image))]
+
 public class DADCell : MonoBehaviour, IDropHandler
 {
     public enum CellType                                                    // Cell types
@@ -256,7 +256,7 @@ public class DADCell : MonoBehaviour, IDropHandler
         if (desc != null)
         {
             // Send message with DragAndDrop info to parents GameObjects
-            gameObject.SendMessageUpwards("OnSimpleDragAndDropEvent", desc, SendMessageOptions.DontRequireReceiver);
+            gameObject.SendMessageUpwards("OnSimpleDragAndDropEvent", desc, SendMessageOptions.DontRequireReceiver);//ゲームオブジェクトと親にアタッチされてるすべてのMonoBehaviour のOnSimpleDragAndDropEventというメソッドを呼び出して、descを引数として、最後はオプションで受信先が無くても良い
         }
     }
 
