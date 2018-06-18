@@ -5,28 +5,43 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Login.unity
+  - enabled: 1
+    path: Assets/Scenes/nagasako/Login.unity
     guid: 435b874c6fcb4f542bab7c6e72e34ed4
-  - enabled: 0
-    path: Assets/Scenes/Battle.unity
+  - enabled: 1
+    path: Assets/Scenes/nagasako/Battle.unity
     guid: 4d340529f4a1ba940ab732906ae80ab0
-  - enabled: 0
-    path: Assets/Scenes/Load.unity
+  - enabled: 1
+    path: Assets/Scenes/nagasako/Load.unity
     guid: 14fa861545edb7842841f3692f27153a
   - enabled: 0
-    path: Assets/Scenes/Home.unity
+    path: Assets/Scenes/nagasako/Home.unity
     guid: 4641c0bab91f43f4db30e680eddf95ad
-  - enabled: 0
-    path: Assets/Scenes/SelectRoom.unity
+  - enabled: 1
+    path: Assets/Scenes/nagasako/SelectRoom.unity
     guid: 4c0e43d075526e64a801b13c6ab51101
-  - enabled: 0
-    path: Assets/Scenes/WaitingRoom.unity
+  - enabled: 1
+    path: Assets/Scenes/nagasako/WaitingRoom.unity
     guid: 05a778f05f6c9ef48897a51bdcd7196d
-  - enabled: 0
-    path: Assets/Scenes/Result.unity
+  - enabled: 1
+    path: Assets/Scenes/nagasako/Result.unity
     guid: af3c1cf69e7cc8042830677f2652f8fa
   - enabled: 1
-    path: Assets/Scenes/Stage.unity
+    path: Assets/Scenes/nagasako/Stage.unity
     guid: 6d4499bb673214540afd3780b0790285
+  - enabled: 1
+    path: Assets/Scenes/login.unity
+    guid: 9ae2fcdc5deeedf4cb491a5157577966
+  - enabled: 1
+    path: Assets/Scenes/account login.unity
+    guid: 2bd3142c40d410c4da803f8a0cb0d99b
+  - enabled: 1
+    path: Assets/Scenes/home.unity
+    guid: 733bbc28e11119f45ab8630a710a6676
+  - enabled: 1
+    path: Assets/Scenes/setting system.unity
+    guid: 255edffd3931111418e13cc8da354e96
+  - enabled: 1
+    path: Assets/Scenes/room battle.unity
+    guid: 90cea4b46fe21e743b98439f383babf5
   m_configObjects: {}
