@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Draw : MonoBehaviour {
 
+    void Start()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            once_draw();
+            
+        }
+    }
     public void once_draw()
     {
 
-        GridLayout grid = this.GetComponent<GridLayout>();
+
         GameObject obj = (GameObject)Resources.Load("Prefabs/Cell");
         GameObject prefab = (GameObject)Instantiate(obj);
         prefab.transform.SetParent(this.transform,false);
