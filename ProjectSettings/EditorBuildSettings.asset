@@ -23,10 +23,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/nagasako/Result.unity
     guid: af3c1cf69e7cc8042830677f2652f8fa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/horie/LobbyScene.unity
     guid: 017b9c7fd044cd54a83b06904ab92dbf
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/horie/Stage.unity
     guid: 6d4499bb673214540afd3780b0790285
   - enabled: 0
@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/room battle.unity
     guid: 90cea4b46fe21e743b98439f383babf5
+  - enabled: 1
+    path: Assets/Scenes/horie/TestStage.unity
+    guid: 61120a88807d11a458352610d9287ad6
   m_configObjects: {}

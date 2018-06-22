@@ -5,41 +5,30 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour
 {
-
     public GameObject axe;
 
     void Start()
-    {
-        //DragAndDropCell cell = GameObject.Find("BattleCell4").GetComponent<DragAndDropCell>();
-        //Debug.Log(cell);
-
-    }
+    {}
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CmdSpawnIt();
+        if (isLocalPlayer) { 
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                CmdSpawnAxe();
+            }
         }
     }
 
     [Command]
-    void CmdSpawnIt()
+    void CmdSpawnAxe()
     {
-        Debug.Log("Spawned.");
-        GameObject obj = Instantiate<GameObject>
-            (
-                axe,
-                transform.position,
-                Quaternion.Euler(new Vector3(0, 0, 0))
-            );
-        NetworkServer.Spawn(obj);
-        DragAndDropItem item = obj.GetComponent<DragAndDropItem>();
-        DragAndDropCell cell = GameObject.Find("BattleCell4").GetComponent<DragAndDropCell>();
-        item.transform.SetParent(cell.transform, false);
-        item.transform.localPosition = Vector3.zero;
-        item.MakeRaycast(true);
-
-        //NetworkServer.Spawn(obj);
+        GameObject obj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+        Cell cell = GameObject.Find("BattleCell0").GetComponent<Cell>();
+        NetworkInstanceId netId = cell.GetNetId();
+        GameObject targetCell = NetworkServer.FindLocalObject(netId);       
+        NetworkServer.SpawnWithClientAuthority(obj, connectionToClient);
+        obj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
+        obj.GetComponent<Item>().parentNetId = netId;
+        Debug.Log("Axe Spawned");
     }
 }
