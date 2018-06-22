@@ -5,6 +5,7 @@ using UnityEngine;
 public class Destroyheadder : MonoBehaviour {
     void Start()
     {
+        Destroy(this.gameObject);
         Destroyheadder.DestoryAll();
     }
 

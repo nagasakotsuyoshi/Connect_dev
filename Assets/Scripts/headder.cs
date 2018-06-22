@@ -1,29 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class headder : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-<<<<<<< HEAD
-
-        Destroyheadder.DontDestroyOnLoad(this);
-    }
-	
-	// Update is called once per frame
-	void Update () {
-=======
 		
 	}
     void Awake()
     {
-        DontDestroyOnLoad(this);
+        Destroyheadder.DontDestroyOnLoad(this);
     }
 
     // Update is called once per frame
     void Update () {
->>>>>>> 91325cc608098c2a35e0daebb56406c99522e437
-		
-	}
+        if  (SceneManager.GetActiveScene().name == "login") {
+                Destroy(this.gameObject);
+            }
+        if (SceneManager.GetActiveScene().name == "Load")
+        {
+            Destroy(this.gameObject);
+        }
+
+    }
 }
