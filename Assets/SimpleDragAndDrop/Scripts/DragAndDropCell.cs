@@ -6,7 +6,7 @@ using System.Collections;
 /// <summary>
 /// Every item's cell must contain this script
 /// </summary>
-[RequireComponent(typeof(Image))]
+//[RequireComponent(typeof(Image))]
 public class DragAndDropCell : MonoBehaviour, IDropHandler
 {  
     public enum CellType                                                    // Cell types
