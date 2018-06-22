@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 22227648}
   - component: {fileID: 11437194}
   - component: {fileID: 11440904}
+  - component: {fileID: 114607506459408018}
   m_Layer: 5
   m_Name: Axe
   m_TagString: Untagged
@@ -91,3 +92,35 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 122268}
   m_IsPrefabParent: 1
+--- !u!114 &114607506459408018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 54
+    i1: 115
+    i2: 61
+    i3: 147
+    i4: 71
+    i5: 177
+    i6: 224
+    i7: 212
+    i8: 43
+    i9: 16
+    i10: 15
+    i11: 121
+    i12: 91
+    i13: 189
+    i14: 5
+    i15: 56
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
