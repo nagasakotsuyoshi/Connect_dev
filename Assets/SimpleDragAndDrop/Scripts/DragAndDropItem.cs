@@ -75,6 +75,9 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             //iconRect.anchorMax = new Vector2(0.5f, 0.5f);
             //iconRect.sizeDelta = new Vector2(myRect.rect.width, myRect.rect.height);
             iconTran.localScale = new Vector3(myTran.localScale.x*50, myTran.localScale.y*50, 0);
+            Debug.Log(myTran.localScale.x);
+            Debug.Log(myTran.localScale.y);
+
             if (OnItemDragStartEvent != null)                                       //DragAndDropCellのOnAnyItemDragStartメソッドを実行させるかどうか
             {
 				OnItemDragStartEvent(this);                                			// Notify all items about drag start for raycast disabling
