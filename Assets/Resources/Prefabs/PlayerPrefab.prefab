@@ -21,8 +21,9 @@ GameObject:
   - component: {fileID: 4641784030052018}
   - component: {fileID: 114170528069774720}
   - component: {fileID: 114890037857732096}
+  - component: {fileID: 114944668556489178}
   m_Layer: 0
-  m_Name: PrayerPrefab
+  m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,3 +95,15 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114944668556489178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1319897899690802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70271f72b8717ab42a9ef1703a39a5b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axe: {fileID: 122268, guid: 36733d9347b1e0d42b100f795bbd0538, type: 2}
