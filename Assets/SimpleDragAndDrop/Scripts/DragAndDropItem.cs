@@ -20,9 +20,9 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	public static event DragEvent OnItemDragEndEvent;                               // Drag end event
 
 	private static Canvas canvas;                                                   // Canvas for item drag operation
-	private static string canvasName = "DragAndDropCanvas";                   		// Name of canvas
+	private static string canvasName = "DragAndDropSprite";                   		// Name of canvas
 	private static int canvasSortOrder = 100;										// Sort order for canvas
-
+    private static SpriteRenderer sr;
 	/// <summary>
 	/// Awake this instance.
 	/// </summary>
@@ -31,9 +31,12 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 		if (canvas == null)
 		{
 			GameObject canvasObj = new GameObject(canvasName);
-			canvas = canvasObj.AddComponent<Canvas>();
-			canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-			canvas.sortingOrder = canvasSortOrder;
+			sr = canvasObj.AddComponent<SpriteRenderer>();
+            //canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            //canvas.sortingOrder = canvasSortOrder;
+            sr.sortingOrder = 0;
+            sr.sortingLayerName = "UI";
+
 		}
 	}
 
@@ -49,23 +52,29 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 			draggedItem = this;                                             		// Set as dragged item
 			// Create item's icon
 			icon = new GameObject();
-			icon.transform.SetParent(canvas.transform);
-
+            //icon.transform.SetParent(canvas.transform);
+            icon.transform.SetParent(sr.transform);
 			icon.name = "Icon";
-			Image myImage = GetComponent<Image>();
-			myImage.raycastTarget = false;                                        	// Disable icon's raycast for correct drop handling
-			Image iconImage = icon.AddComponent<Image>();
-			iconImage.raycastTarget = false;
-			iconImage.sprite = myImage.sprite;                                      //画像データをコピー
-			RectTransform iconRect = icon.GetComponent<RectTransform>();
-            
-            // Set icon's dimensions
-            RectTransform myRect = GetComponent<RectTransform>();
-			iconRect.pivot = new Vector2(0.5f, 0.5f);
-			iconRect.anchorMin = new Vector2(0.5f, 0.5f);
-			iconRect.anchorMax = new Vector2(0.5f, 0.5f);
-			iconRect.sizeDelta = new Vector2(myRect.rect.width, myRect.rect.height);
+            //Image myImage = GetComponent<Image>();
+            //myImage.raycastTarget = false;                                        	// Disable icon's raycast for correct drop handling
+            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
+            mySprite.sortingLayerName = "UI";
+            //Image iconImage = icon.AddComponent<Image>();
+            SpriteRenderer iconSprite = icon.AddComponent<SpriteRenderer>();
+            iconSprite.sortingLayerName = "UI";
+            //iconImage.raycastTarget = false;
+            //iconImage.sprite = myImage.sprite;                                      //画像データをコピー
+            iconSprite.sprite = mySprite.sprite;
+            //RectTransform iconRect = icon.GetComponent<RectTransform>();
+            Transform iconTran = icon.GetComponent<Transform>();
 
+            // Set icon's dimensions
+            Transform myTran = GetComponent<Transform>();
+            //iconRect.pivot = new Vector2(0.5f, 0.5f);
+            //iconRect.anchorMin = new Vector2(0.5f, 0.5f);
+            //iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+            //iconRect.sizeDelta = new Vector2(myRect.rect.width, myRect.rect.height);
+            iconTran.localScale = new Vector3(myTran.localScale.x*50, myTran.localScale.y*50, 0);
             if (OnItemDragStartEvent != null)                                       //DragAndDropCellのOnAnyItemDragStartメソッドを実行させるかどうか
             {
 				OnItemDragStartEvent(this);                                			// Notify all items about drag start for raycast disabling

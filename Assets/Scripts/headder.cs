@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class headder : MonoBehaviour {
 
@@ -10,11 +11,18 @@ public class headder : MonoBehaviour {
 	}
     void Awake()
     {
-        DontDestroyOnLoad(this);
+        Destroyheadder.DontDestroyOnLoad(this);
     }
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        if  (SceneManager.GetActiveScene().name == "login") {
+                Destroy(this.gameObject);
+            }
+        if (SceneManager.GetActiveScene().name == "Load")
+        {
+            Destroy(this.gameObject);
+        }
+
+    }
 }
