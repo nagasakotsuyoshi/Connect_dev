@@ -19,9 +19,9 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	public static event DragEvent OnItemDragStartEvent;                             // Drag start event
 	public static event DragEvent OnItemDragEndEvent;                               // Drag end event
 
-	private static Canvas canvas;                                                   // Canvas for item drag operation
+    private static Canvas canvas = null;                                                   // Canvas for item drag operation
 	private static string canvasName = "DragAndDropSprite";                   		// Name of canvas
-	private static int canvasSortOrder = 100;										// Sort order for canvas
+	//private static int canvasSortOrder = 100;										// Sort order for canvas
     private static SpriteRenderer sr;
 	/// <summary>
 	/// Awake this instance.
