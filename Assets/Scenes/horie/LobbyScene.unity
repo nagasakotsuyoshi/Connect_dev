@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -296,19 +296,16 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   m_ShowLobbyGUI: 1
-  m_MaxPlayers: 4
+  m_MaxPlayers: 2
   m_MaxPlayersPerConnection: 1
-  m_MinPlayers: 0
+  m_MinPlayers: 1
   m_LobbyPlayerPrefab: {fileID: 114517251400524722, guid: b3dcb73f6cee31143abca07d910b1a8c,
     type: 2}
-  m_GamePlayerPrefab: {fileID: 1749172253055308, guid: 8a76dedf04b0bf1448989a9073f16d55,
+  m_GamePlayerPrefab: {fileID: 1911793912340280, guid: ce7c2cd3308743246b267253b29d8210,
     type: 2}
   m_LobbyScene: LobbyScene
   m_PlayScene: HorieStage
   lobbySlots: []
-  playerPrefabs:
-  - {fileID: 1319897899690802, guid: 1aa3174c5e7134c42aad0fcfbf34eb8e, type: 2}
-  - {fileID: 1510041912431184, guid: d5a806dccc3e7e44eac2aba0f65d4efc, type: 2}
 --- !u!4 &1261866254
 Transform:
   m_ObjectHideFlags: 0
