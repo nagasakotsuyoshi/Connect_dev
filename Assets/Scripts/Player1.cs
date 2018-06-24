@@ -27,8 +27,9 @@ public class Player1 : NetworkBehaviour
         GameObject obj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
         Cell cell = GameObject.Find("BattleCell0").GetComponent<Cell>();
         NetworkInstanceId netId = cell.GetNetId();
-        GameObject targetCell = NetworkServer.FindLocalObject(netId);       
-        NetworkServer.SpawnWithClientAuthority(obj, connectionToClient);
+        GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        //NetworkServer.SpawnWithClientAuthority(obj, connectionToClient);
+        NetworkServer.Spawn(obj);
         obj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
         obj.GetComponent<Item>().parentNetId = netId;
         Debug.Log("Axe Spawned");

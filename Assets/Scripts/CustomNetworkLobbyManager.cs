@@ -9,8 +9,8 @@ public class CustomNetworkLobbyManager : NetworkLobbyManager {
 
     public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
     {
-        Debug.Log(chosenNum);
-        if (conn.connectionId == 0)
+        Debug.Log(conn.connectionId);
+        if (conn.connectionId == 0)  //ローカルクライアントであるか(Host起動のみ)
             chosenNum = 0;
         else
             chosenNum = 1;

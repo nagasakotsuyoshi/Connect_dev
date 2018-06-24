@@ -54,7 +54,7 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 
     void OnDisable()
     {
-        Debug.Log("disable");
+        //Debug.Log("disable");
         DragAndDropItem.OnItemDragStartEvent -= OnAnyItemDragStart;
         DragAndDropItem.OnItemDragEndEvent -= OnAnyItemDragEnd;
         StopAllCoroutines();                                                // Stop all coroutines if there is any
