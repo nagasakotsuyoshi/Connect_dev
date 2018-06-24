@@ -9,7 +9,6 @@ public class CustomNetworkLobbyManager : NetworkLobbyManager {
 
     public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
     {
-        Debug.Log(chosenNum);
         if (conn.connectionId == 0)
             chosenNum = 0;
         else

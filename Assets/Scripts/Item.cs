@@ -22,7 +22,7 @@ public class Item : NetworkBehaviour {
     [ClientCallback]
     void OnParentNetIdChange(NetworkInstanceId newVal)
     {
-        Debug.Log("Attached item net id:" + newVal);
+        //Debug.Log("Attached item net id:" + newVal);
         NetworkInstanceId itemNetId = this.GetNetId();
         GameObject targetItem = ClientScene.FindLocalObject(itemNetId);
         GameObject parentCell = ClientScene.FindLocalObject(newVal);
