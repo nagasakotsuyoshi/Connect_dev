@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/nagasako/Battle.unity
     guid: 4d340529f4a1ba940ab732906ae80ab0
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/nagasako/Load.unity
     guid: 14fa861545edb7842841f3692f27153a
   - enabled: 0
@@ -29,22 +29,25 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/horie/Stage.unity
     guid: 6d4499bb673214540afd3780b0790285
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Login.unity
     guid: 9ae2fcdc5deeedf4cb491a5157577966
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/account login.unity
     guid: 2bd3142c40d410c4da803f8a0cb0d99b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Home.unity
     guid: 733bbc28e11119f45ab8630a710a6676
   - enabled: 0
     path: Assets/Scenes/aa.unity
     guid: 255edffd3931111418e13cc8da354e96
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/room battle.unity
     guid: 90cea4b46fe21e743b98439f383babf5
   - enabled: 1
     path: Assets/Scenes/horie/HorieStage.unity
     guid: 45adfb2b7d93b4d4db9525ec9b5d6e7d
+  - enabled: 1
+    path: Assets/Scenes/Rankbattle.unity
+    guid: c8b3e26ffbd6fc547bc8ca690f2ed9ea
   m_configObjects: {}

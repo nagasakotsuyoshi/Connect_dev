@@ -16,7 +16,7 @@ public class headder : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if  (SceneManager.GetActiveScene().name == "login") {
+        if  (SceneManager.GetActiveScene().name == "Login") {
                 Destroy(this.gameObject);
             }
         if (SceneManager.GetActiveScene().name == "Load")
