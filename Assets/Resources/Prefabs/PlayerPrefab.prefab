@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4641784030052018}
   - component: {fileID: 114170528069774720}
   - component: {fileID: 114890037857732096}
-  - component: {fileID: 114816692404683628}
+  - component: {fileID: 114595960072264424}
   m_Layer: 0
-  m_Name: Player1Prefab
+  m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
     i15: 142
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114816692404683628
+--- !u!114 &114595960072264424
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,6 +86,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axe: {fileID: 1289431419804710, guid: 691b2164212a5394eaeabf51a49ec918, type: 2}
+  player1Camera: {fileID: 1490525487900526, guid: 0ba1112095f3f224894fd14de3a6081a,
+    type: 2}
+  player2Camera: {fileID: 1637817451235930, guid: 8bc305e384da22d43a7e4c027e83db6f,
+    type: 2}
+  chosenNum: 0
 --- !u!114 &114890037857732096
 MonoBehaviour:
   m_ObjectHideFlags: 1

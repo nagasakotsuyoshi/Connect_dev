@@ -11,10 +11,11 @@ public class CustomNetworkLobbyManager : NetworkLobbyManager {
     {
         Debug.Log(conn.connectionId);
         if (conn.connectionId == 0)  //ローカルクライアントであるか(Host起動のみ)
-            chosenNum = 0;
-        else
             chosenNum = 1;
-        GameObject player = Instantiate(spawnPrefabs[chosenNum]) as GameObject;
+        else
+            chosenNum = 2;
+        GameObject player = Instantiate(spawnPrefabs[0]) as GameObject;
+        player.GetComponent<Player>().chosenNum = chosenNum;
         return player;
     }
 
