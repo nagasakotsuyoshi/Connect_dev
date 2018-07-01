@@ -55,7 +55,7 @@ public class GameController : NetworkBehaviour {
 
 
 
-    void OnTurnChange(Turn turn)
+    void OnTurnChanged(Turn turn)
     {
 
     }
@@ -71,7 +71,7 @@ public class GameController : NetworkBehaviour {
 
 
 
-    void OnPhaseChange(Phase phase)
+    void OnPhaseChanged(Phase phase)
     {
 
     }
