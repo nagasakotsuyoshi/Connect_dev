@@ -3,13 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Player1 : NetworkBehaviour
+public class Player : NetworkBehaviour
 {
     public GameObject axe;
+    public GameObject player1Camera;
+    public GameObject player2Camera;
+
+    [SyncVar]
+    public int chosenNum;
 
     void Start()
     {
-
+        Debug.Log(chosenNum);
+        if (isLocalPlayer)
+        {
+            if (chosenNum == 1)
+            {
+                Instantiate(player1Camera);
+            }
+            else if (chosenNum == 2)
+            {
+                Instantiate(player2Camera);
+            }
+        }
     }
 
     void Update()
