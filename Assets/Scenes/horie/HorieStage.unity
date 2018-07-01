@@ -498,6 +498,10 @@ Prefab:
       propertyPath: m_Name
       value: DebugCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 1490525487900526, guid: 0ba1112095f3f224894fd14de3a6081a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ba1112095f3f224894fd14de3a6081a, type: 2}
   m_IsPrefabParent: 0
