@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public class GameController : NetworkBehaviour {
 
+
     //ターンのステータス
     public enum Turn
     {
@@ -35,12 +36,11 @@ public class GameController : NetworkBehaviour {
     [SyncVar(hook = "OnPhaseChanged")]
     public Phase m_Phase = Phase.Initializing;
 
-    // Use this for initialization
-    void Start () {
+
+	void Start () {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
