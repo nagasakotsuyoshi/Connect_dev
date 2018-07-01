@@ -237,7 +237,6 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1319897899690802, guid: 1aa3174c5e7134c42aad0fcfbf34eb8e, type: 2}
-  - {fileID: 1510041912431184, guid: d5a806dccc3e7e44eac2aba0f65d4efc, type: 2}
   - {fileID: 1423902559601618, guid: f0900333ddc79ae4ea062b9a6c527274, type: 2}
   - {fileID: 1289431419804710, guid: 691b2164212a5394eaeabf51a49ec918, type: 2}
   m_CustomConfig: 0
@@ -282,7 +281,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
