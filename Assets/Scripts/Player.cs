@@ -38,6 +38,18 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
+    public void CmdChangeTurn(Turn turn)
+    {
+        GameObject.Find("GameController").GetComponent<GameController>().ChangeTurn(turn);
+    }
+
+    [Command]
+    public void CmdChangePhase(Phase phase)
+    {
+        GameObject.Find("GameController").GetComponent<GameController>().ChangePhase(phase);
+    }
+
+    [Command]
     void CmdSpawnAxe()
     {
         GameObject obj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
