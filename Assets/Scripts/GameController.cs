@@ -14,29 +14,6 @@ public class GameController : NetworkBehaviour {
         Player2
     }
 
-    // ターンの状態種別
-    public enum Turn
-    {
-        Initializing,
-        Player1,
-        Player2,
-        Result,
-    }
-
-    // フェイズの状態種別
-    // Trello のconnectボードの”もっと細分化”のリストの”ステータス”カードを参照
-    public enum Phase
-    {
-        Initializing, //初期値
-        Draw,    //カードを引く
-        UseCard, //カードを使う、置く
-        Attack,  //敵に攻撃する
-        Defend,  //敵の攻撃から守る
-        Decision,//勝敗の判定
-        End,     //ターンを終了
-        Waiting, //待つ
-    }
-
     // ターンの状態
     [SyncVar(hook = "OnTurnChanged")]
     public Turn m_Turn = Turn.Initializing;
@@ -53,18 +30,47 @@ public class GameController : NetworkBehaviour {
 
 	void Start () {
         m_TurnText = GameObject.Find("TurnText").GetComponent<Text>();
+
         if (isClient)
         {
             SetLocalPlayer();
         }
 
-        m_TurnText.text = m_Player + ""; //
+        //m_TurnText.text = m_Player + ""; //
+        if (isServer)
+        {
+            m_Turn = Turn.Player1; //
+        }
+
     }
 	
     // Updateはサーバのみで行う
     [ServerCallback]
 	void Update () {
-        m_Turn = Turn.Player1;
+        if(m_Turn == Turn.Player1)
+        {
+            switch (m_Phase)
+            {
+                case Phase.End:
+                    ChangeTurn(Turn.Player2);
+                    ChangePhase(Phase.Initializing);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if(m_Turn == Turn.Player2)
+        {
+            switch (m_Phase)
+            {
+                case Phase.End:
+                    ChangeTurn(Turn.Player1);
+                    ChangePhase(Phase.Initializing);
+                    break;
+                default:
+                    break;
+            }
+        }
 	}
 
     [Client]
@@ -100,9 +106,8 @@ public class GameController : NetworkBehaviour {
 
     void OnTurnChanged(Turn turn)
     {
-        //m_TurnText.text = turn + "";
+        m_TurnText.text = turn + "";
     }
-
 
     // フェイズの状態を変更する
     [Server]
@@ -111,8 +116,6 @@ public class GameController : NetworkBehaviour {
         // m_Phaseを変更すれば、あとはhookによりOnPhaseChangedが実行される
         m_Phase = phase;
     }
-
-
 
     void OnPhaseChanged(Phase phase)
     {
