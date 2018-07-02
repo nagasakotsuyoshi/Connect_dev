@@ -6,8 +6,15 @@ using UnityEngine.Networking;
 
 public class GameController : NetworkBehaviour {
 
+    // プレイヤーの種別 
+    public enum LocalPlayer
+    {
+        None,
+        Player1,
+        Player2
+    }
 
-    //ターンのステータス
+    // ターンの状態種別
     public enum Turn
     {
         Initializing,
@@ -16,8 +23,8 @@ public class GameController : NetworkBehaviour {
         Result,
     }
 
-    //フェイズのステータス
-    //Trello のconnectボードの”もっと細分化”のリストの”ステータス”カードを参照
+    // フェイズの状態種別
+    // Trello のconnectボードの”もっと細分化”のリストの”ステータス”カードを参照
     public enum Phase
     {
         Initializing, //初期値
@@ -30,20 +37,58 @@ public class GameController : NetworkBehaviour {
         Waiting, //待つ
     }
 
-    // プレイヤーの状態
+    // ターンの状態
     [SyncVar(hook = "OnTurnChanged")]
     public Turn m_Turn = Turn.Initializing;
+
+    // フェイズの状態
     [SyncVar(hook = "OnPhaseChanged")]
     public Phase m_Phase = Phase.Initializing;
 
+    // ローカルクライアントにあるプレイヤーの参照
+    public LocalPlayer m_Player = LocalPlayer.None;
+
+    // ターン種別Textの参照
+    Text m_TurnText;
 
 	void Start () {
-		
-	}
+        m_TurnText = GameObject.Find("TurnText").GetComponent<Text>();
+        if (isClient)
+        {
+            SetLocalPlayer();
+        }
+
+        m_TurnText.text = m_Player + ""; //
+    }
 	
+    // Updateはサーバのみで行う
+    [ServerCallback]
 	void Update () {
-		
+        m_Turn = Turn.Player1;
 	}
+
+    [Client]
+    void SetLocalPlayer()
+    {
+        foreach (Player player in FindObjectsOfType<Player>())
+        {
+            if (player.isLocalPlayer)
+            {
+                switch (player.chosenNum)
+                {
+                    case 1:
+                        m_Player = LocalPlayer.Player1;
+                        break;
+                    case 2:
+                        m_Player = LocalPlayer.Player2;
+                        break;
+                    default:
+                        Debug.Log("想定外のプレイヤー");
+                        break;
+                }
+            }
+        }
+    }
 
     // ターンの状態を変更する
     [Server]
@@ -53,11 +98,9 @@ public class GameController : NetworkBehaviour {
         m_Turn = turn;
     }
 
-
-
     void OnTurnChanged(Turn turn)
     {
-
+        //m_TurnText.text = turn + "";
     }
 
 
