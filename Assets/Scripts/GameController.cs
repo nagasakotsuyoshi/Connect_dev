@@ -33,20 +33,17 @@ public class GameController : NetworkBehaviour {
 
 	void Start () {
         m_TurnText = GameObject.Find("TurnText").GetComponent<Text>();
+       if (isServer)
+        {
+            ChangeTurn(Turn.Player1);
+        }
 
         if (isClient)
         {
             SetLocalPlayer();
-            //CoverChange();
+            OnTurnChanged(m_Turn);
 
         }
-
-        //m_TurnText.text = m_Player + ""; //
-        if (isServer)
-        {
-            m_Turn = Turn.Player1; //
-        }
-
     }
 	
     // Updateはサーバのみで行う
