@@ -35,7 +35,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             //canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             //canvas.sortingOrder = canvasSortOrder;
             sr.sortingOrder = 0;
-            sr.sortingLayerName = "UI";
+            sr.sortingLayerName = "Items";
 
 		}
 	}

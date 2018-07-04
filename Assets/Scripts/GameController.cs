@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 
 public class GameController : NetworkBehaviour {
 
+    public GameObject m_coverEnemy;
+    public GameObject m_coverMe;
+
     // プレイヤーの種別 
     public enum LocalPlayer
     {
@@ -34,6 +37,8 @@ public class GameController : NetworkBehaviour {
         if (isClient)
         {
             SetLocalPlayer();
+            //CoverChange();
+
         }
 
         //m_TurnText.text = m_Player + ""; //
@@ -107,6 +112,8 @@ public class GameController : NetworkBehaviour {
     void OnTurnChanged(Turn turn)
     {
         m_TurnText.text = turn + "";
+        CoverChange(turn);
+
     }
 
     // フェイズの状態を変更する
@@ -119,6 +126,27 @@ public class GameController : NetworkBehaviour {
 
     void OnPhaseChanged(Phase phase)
     {
+        
+    }
 
+    void CoverChange(Turn turn)
+    {
+        Debug.Log("coverChange");
+        if(turn == Turn.Player1 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 1)
+        {
+            m_coverMe.SetActive(false);
+        }
+        else if(turn == Turn.Player1 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 2)
+        {
+            m_coverMe.SetActive(true);
+        }
+        else if (turn == Turn.Player2 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 1)
+        {
+            m_coverMe.SetActive(true);
+        }
+        else if (turn == Turn.Player2 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 2)
+        {
+            m_coverMe.SetActive(false);
+        }
     }
 }
