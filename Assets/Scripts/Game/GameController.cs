@@ -8,6 +8,23 @@ public class GameController : NetworkBehaviour {
 
     public GameObject m_coverEnemy;
     public GameObject m_coverMe;
+    public List<GameObject> m_Decks = new List<GameObject>();
+    public GameObject card1;
+    public GameObject card2;
+    public GameObject card3;
+    public GameObject card4;
+    public GameObject card5;
+    public GameObject card6;
+    public GameObject card7;
+    public GameObject card8;
+    public GameObject card9;
+    public GameObject card10;
+    public GameObject card11;
+    public GameObject card12;
+    public GameObject card13;
+    public GameObject cardJorker;
+    GameObject cardObj;
+
 
     // プレイヤーの種別 
     public enum LocalPlayer
@@ -27,7 +44,7 @@ public class GameController : NetworkBehaviour {
 
     // ローカルクライアントにあるプレイヤーの参照
     public LocalPlayer m_Player = LocalPlayer.None;
-
+    
     // ターン種別Textの参照
     Text m_TurnText;
 
@@ -98,6 +115,74 @@ public class GameController : NetworkBehaviour {
         }
     }
 
+    void InitializeDeck()
+    {
+
+        for (int i = 0; i < 48; i++)
+        {
+
+            switch (i%12)
+            {
+                case 1:
+                    cardObj = Instantiate(card1);
+                    break;
+                case 2:
+                    cardObj = Instantiate(card2);
+                    break;
+                case 3:
+                    cardObj = Instantiate(card3);
+                    break;
+                case 4:
+                    cardObj = Instantiate(card4);
+                    break;
+                
+                case 5:
+                    cardObj = Instantiate(card5);
+                    break;
+                case 6:
+                    cardObj = Instantiate(card6);
+                    break;
+                case 7:
+                    cardObj = Instantiate(card7);
+                    break;
+                case 8:
+                    cardObj = Instantiate(card8);
+                    break;
+                case 9:
+                    cardObj = Instantiate(card9);
+                    break;
+                case 10:
+                    cardObj = Instantiate(card10);
+                    break;
+                case 11:
+                    cardObj = Instantiate(card11);
+                    break;
+                case 12:
+                    cardObj = Instantiate(card12);
+                    break;
+                default:
+                    break;
+            }
+            NetworkServer.Spawn(cardObj);
+            m_Decks.Add(cardObj);
+        }
+        cardObj = Instantiate(cardJorker);
+        NetworkServer.Spawn(cardObj);
+        m_Decks.Add(cardObj);
+        m_Decks.Add(cardObj);
+    }
+
+    
+    /*//ボタンを押したらカードを引く ※途中
+    void Draw()
+    {
+        GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        cardObj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
+        cardObj.GetComponent<Item>().parentNetId = netId;
+    }*/
+
+
+
     // ターンの状態を変更する
     [Server]
     public void ChangeTurn(Turn turn)
@@ -146,4 +231,6 @@ public class GameController : NetworkBehaviour {
             m_coverMe.SetActive(false);
         }
     }
+
+
 }

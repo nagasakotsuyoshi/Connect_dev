@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 224398168217848986}
   - component: {fileID: 114810695365806874}
   - component: {fileID: 212996681900250462}
+  - component: {fileID: 114612917274924298}
+  - component: {fileID: 114933433052445982}
   m_Layer: 5
   m_Name: Jorker
   m_TagString: Untagged
@@ -28,6 +30,38 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114612917274924298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1597373462913162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 3
+    i1: 136
+    i2: 212
+    i3: 31
+    i4: 214
+    i5: 97
+    i6: 96
+    i7: 36
+    i8: 121
+    i9: 1
+    i10: 69
+    i11: 38
+    i12: 39
+    i13: 32
+    i14: 5
+    i15: 6
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114810695365806874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -37,6 +71,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20c67a56d62e94747b8f17db1b0ffc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114933433052445982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1597373462913162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ff370beb210e94ea1e3fe0a61abf12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212996681900250462

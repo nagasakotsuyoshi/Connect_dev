@@ -22,4 +22,5 @@ public class PhaseButtons : MonoBehaviour {
         Debug.Log("OnClick");
         ClientScene.localPlayers[0].gameObject.GetComponent<Player>().CmdChangePhase(phase);
     }
+
 }
