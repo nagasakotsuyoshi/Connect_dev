@@ -8,7 +8,9 @@ public class GameController : NetworkBehaviour {
 
     public GameObject m_coverEnemy;
     public GameObject m_coverMe;
-    public List<GameObject> m_Decks = new List<GameObject>();
+
+    public SyncListInt m_Decks = new SyncListInt();
+
     public GameObject card1;
     public GameObject card2;
     public GameObject card3;
@@ -23,7 +25,7 @@ public class GameController : NetworkBehaviour {
     public GameObject card12;
     public GameObject card13;
     public GameObject cardJorker;
-    GameObject cardObj;
+    public int cardNum;
 
 
     // プレイヤーの種別 
@@ -53,6 +55,7 @@ public class GameController : NetworkBehaviour {
        if (isServer)
         {
             ChangeTurn(Turn.Player1);
+            InitializeDeck();
         }
 
         if (isClient)
@@ -64,7 +67,7 @@ public class GameController : NetworkBehaviour {
     }
 	
     // Updateはサーバのみで行う
-    [ServerCallback]
+    //[ServerCallback]
 	void Update () {
         if(m_Turn == Turn.Player1)
         {
@@ -90,7 +93,10 @@ public class GameController : NetworkBehaviour {
                     break;
             }
         }
-	}
+
+       // Debug.Log(m_Decks.Count);
+       // Debug.Log(m_Decks[0]);
+    }
 
     [Client]
     void SetLocalPlayer()
@@ -117,59 +123,54 @@ public class GameController : NetworkBehaviour {
 
     void InitializeDeck()
     {
-
         for (int i = 0; i < 48; i++)
         {
-
-            switch (i%12)
+            switch (i%12+1)
             {
                 case 1:
-                    cardObj = Instantiate(card1);
+                    cardNum = 1;
                     break;
                 case 2:
-                    cardObj = Instantiate(card2);
+                    cardNum = 2;
                     break;
                 case 3:
-                    cardObj = Instantiate(card3);
+                    cardNum = 3;
                     break;
                 case 4:
-                    cardObj = Instantiate(card4);
-                    break;
-                
+                    cardNum = 4;
+                    break;               
                 case 5:
-                    cardObj = Instantiate(card5);
+                    cardNum = 5;
                     break;
                 case 6:
-                    cardObj = Instantiate(card6);
+                    cardNum = 6;
                     break;
                 case 7:
-                    cardObj = Instantiate(card7);
+                    cardNum = 7;
                     break;
                 case 8:
-                    cardObj = Instantiate(card8);
+                    cardNum = 8;
                     break;
                 case 9:
-                    cardObj = Instantiate(card9);
+                    cardNum = 9;
                     break;
                 case 10:
-                    cardObj = Instantiate(card10);
+                    cardNum = 10;
                     break;
                 case 11:
-                    cardObj = Instantiate(card11);
+                    cardNum = 11;
                     break;
                 case 12:
-                    cardObj = Instantiate(card12);
+                    cardNum = 12;
                     break;
                 default:
                     break;
             }
-            NetworkServer.Spawn(cardObj);
-            m_Decks.Add(cardObj);
+            m_Decks.Add(cardNum);
         }
-        cardObj = Instantiate(cardJorker);
-        NetworkServer.Spawn(cardObj);
-        m_Decks.Add(cardObj);
-        m_Decks.Add(cardObj);
+        cardNum = 13;
+        m_Decks.Add(cardNum);
+        m_Decks.Add(cardNum);
     }
 
     

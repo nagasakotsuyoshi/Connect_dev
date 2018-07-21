@@ -5,9 +5,28 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour
 {
+    public GameController m_GameController;
     public GameObject axe;
     public GameObject player1Camera;
     public GameObject player2Camera;
+
+    public GameObject card1;
+    public GameObject card2;
+    public GameObject card3;
+    public GameObject card4;
+    public GameObject card5;
+    public GameObject card6;
+    public GameObject card7;
+    public GameObject card8;
+    public GameObject card9;
+    public GameObject card10;
+    public GameObject card11;
+    public GameObject card12;
+    public GameObject card13;
+    public GameObject cardJorker;
+
+    public SyncListInt m_IntHands = new SyncListInt();
+    public List<GameObject> m_HandCards = new List<GameObject>();
 
     [SyncVar]
     public int chosenNum;
@@ -35,6 +54,16 @@ public class Player : NetworkBehaviour
                 CmdSpawnAxe();
             }
         }
+    }
+
+    void Draw()
+    {
+        m_GameController = GameObject.Find("GameController").GetComponent<GameController>();
+        m_IntHands.Add(m_GameController.m_Decks[0]);
+
+        //GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        //cardObj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
+        //cardObj.GetComponent<Item>().parentNetId = netId;
     }
 
     [Command]

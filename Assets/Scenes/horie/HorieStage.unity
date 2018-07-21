@@ -188,7 +188,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_coverEnemy: {fileID: 173608422}
   m_coverMe: {fileID: 2138936414}
-  m_Decks: []
   card1: {fileID: 1566293511186188, guid: 60d5021e76993e0418ddfba59d5033cf, type: 2}
   card2: {fileID: 1925529404464196, guid: 564f20fce126dd347943b5afe05ebd69, type: 2}
   card3: {fileID: 1264345972729556, guid: de078079fecd9744ab929d1cdd5c12d4, type: 2}
@@ -203,6 +202,7 @@ MonoBehaviour:
   card12: {fileID: 1607168446090394, guid: 4c4d2f3b1d231db49a2630db4d9e2283, type: 2}
   card13: {fileID: 1983965965968374, guid: 55a84a1b6c95c5b4e88ae193ca074477, type: 2}
   cardJorker: {fileID: 1597373462913162, guid: 0388d41fd66160247901452627200506, type: 2}
+  cardNum: 0
   m_Turn: 0
   m_Phase: 0
   m_Player: 0
@@ -1877,7 +1877,7 @@ GameObject:
   - component: {fileID: 1990724669}
   - component: {fileID: 1990724668}
   m_Layer: 0
-  m_Name: Button
+  m_Name: DrawButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
