@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114219412640688834}
   - component: {fileID: 114452396947348236}
   - component: {fileID: 114903993214883370}
+  - component: {fileID: 114899532645672862}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -121,6 +122,18 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114899532645672862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1289431419804710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e4fddf453540547af9f42553ae727c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardNum: 5
 --- !u!114 &114903993214883370
 MonoBehaviour:
   m_ObjectHideFlags: 1

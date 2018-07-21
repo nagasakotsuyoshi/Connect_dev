@@ -52,8 +52,11 @@ public class Player : NetworkBehaviour
     [Command]
     void CmdSpawnAxe()
     {
+        if (chosenNum == 1) {
+
+
         GameObject obj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
-        Cell cell = GameObject.Find("BattleCell0").GetComponent<Cell>();
+        Cell cell = GameObject.Find("HandCard/HandCell").GetComponent<Cell>();
         NetworkInstanceId netId = cell.GetNetId();
         GameObject targetCell = NetworkServer.FindLocalObject(netId);
         //NetworkServer.SpawnWithClientAuthority(obj, connectionToClient);
@@ -61,5 +64,18 @@ public class Player : NetworkBehaviour
         obj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
         obj.GetComponent<Item>().parentNetId = netId;
         Debug.Log("Axe Spawned");
+    }
+        else if(chosenNum == 2) {
+            GameObject obj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+            Cell cell = GameObject.Find("HandCard/HandCell2").GetComponent<Cell>();
+            NetworkInstanceId netId = cell.GetNetId();
+            GameObject targetCell = NetworkServer.FindLocalObject(netId);
+            //NetworkServer.SpawnWithClientAuthority(obj, connectionToClient);
+            NetworkServer.Spawn(obj);
+            obj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
+            obj.GetComponent<Item>().parentNetId = netId;
+            Debug.Log("Axe Spawned");
+
+        }
     }
 }
