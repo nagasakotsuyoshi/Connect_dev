@@ -15,14 +15,20 @@ public class PhaseButtons : MonoBehaviour {
         m_DrawButton = GameObject.Find("DrawButton");
 
         // ボタンが押された時の処理を登録
-        m_EndPhaseButton.GetComponent<Button>().onClick.AddListener(() => OnClick(Phase.End));
+        m_EndPhaseButton.GetComponent<Button>().onClick.AddListener(() => OnEndClick(Phase.End));
+        m_DrawButton.GetComponent<Button>().onClick.AddListener(() => OnDrawClick());
     }
 
     //ボタンが押された時の処理
-    void OnClick(Phase phase)
+    void OnEndClick(Phase phase)
     {
-        Debug.Log("OnClick");
+        Debug.Log("OnEndClick");
         ClientScene.localPlayers[0].gameObject.GetComponent<Player>().CmdChangePhase(phase);
     }
 
+    void OnDrawClick()
+    {
+        Debug.Log("OnDrawClick");
+        ClientScene.localPlayers[0].gameObject.GetComponent<Player>().Draw();
+    }
 }

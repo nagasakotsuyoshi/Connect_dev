@@ -10,6 +10,7 @@ public class Player : NetworkBehaviour
     public GameObject player1Camera;
     public GameObject player2Camera;
 
+    public GameObject cardObj;
     public GameObject card1;
     public GameObject card2;
     public GameObject card3;
@@ -49,21 +50,20 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        if (isLocalPlayer) { 
+        if (isLocalPlayer) {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 CmdSpawnAxe();
             }
         }
     }
 
-    void Draw()
+    public void Draw()
     {
         m_GameController = GameObject.Find("GameController").GetComponent<GameController>();
-        m_IntHands.Add(m_GameController.m_Decks[0]);
-
-        //GameObject targetCell = NetworkServer.FindLocalObject(netId);
-        //cardObj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
-        //cardObj.GetComponent<Item>().parentNetId = netId;
+        int cardNum = m_GameController.m_Decks[0];
+        m_GameController.m_Decks.RemoveAt(0);
+        m_IntHands.Add(cardNum);
+        CmdSpawnDrawCard(cardNum);
     }
 
     [Command]
@@ -76,6 +76,66 @@ public class Player : NetworkBehaviour
     public void CmdChangePhase(Phase phase)
     {
         GameObject.Find("GameController").GetComponent<GameController>().ChangePhase(phase);
+    }
+
+    [Command]
+    void CmdSpawnDrawCard(int num)
+    {
+        Cell cell = GameObject.Find("Hand1").GetComponent<Cell>();
+        NetworkInstanceId netId = cell.GetNetId();
+        GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        //NetworkServer.SpawnWithClientAuthority(obj, connectionToClient);
+        switch (num)
+        {
+            case 1:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 2:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 3:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 4:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 5:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 6:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 7:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 8:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 9:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 10:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 11:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 12:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 13:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 14:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            default:
+                break;
+        }
+        NetworkServer.Spawn(cardObj);
+        cardObj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
+        cardObj.GetComponent<Item>().parentNetId = netId;
+        Debug.Log("Draw card Spawned");
     }
 
     [Command]

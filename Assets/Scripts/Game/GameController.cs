@@ -94,8 +94,8 @@ public class GameController : NetworkBehaviour {
             }
         }
 
-       // Debug.Log(m_Decks.Count);
-       // Debug.Log(m_Decks[0]);
+        Debug.Log(m_Decks.Count);
+       Debug.Log(m_Decks[0]);
     }
 
     [Client]
@@ -171,18 +171,10 @@ public class GameController : NetworkBehaviour {
         cardNum = 13;
         m_Decks.Add(cardNum);
         m_Decks.Add(cardNum);
+        cardNum = 14;
+        m_Decks.Add(cardNum);
+        m_Decks.Add(cardNum);
     }
-
-    
-    /*//ボタンを押したらカードを引く ※途中
-    void Draw()
-    {
-        GameObject targetCell = NetworkServer.FindLocalObject(netId);
-        cardObj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
-        cardObj.GetComponent<Item>().parentNetId = netId;
-    }*/
-
-
 
     // ターンの状態を変更する
     [Server]
