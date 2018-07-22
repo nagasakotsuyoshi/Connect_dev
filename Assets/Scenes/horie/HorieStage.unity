@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -188,6 +188,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_coverEnemy: {fileID: 173608422}
   m_coverMe: {fileID: 2138936414}
+  m_P1HandObjs: []
+  m_P2HandObjs: []
   card1: {fileID: 1566293511186188, guid: 60d5021e76993e0418ddfba59d5033cf, type: 2}
   card2: {fileID: 1925529404464196, guid: 564f20fce126dd347943b5afe05ebd69, type: 2}
   card3: {fileID: 1264345972729556, guid: de078079fecd9744ab929d1cdd5c12d4, type: 2}
@@ -202,6 +204,8 @@ MonoBehaviour:
   card12: {fileID: 1607168446090394, guid: 4c4d2f3b1d231db49a2630db4d9e2283, type: 2}
   card13: {fileID: 1983965965968374, guid: 55a84a1b6c95c5b4e88ae193ca074477, type: 2}
   cardJorker: {fileID: 1597373462913162, guid: 0388d41fd66160247901452627200506, type: 2}
+  cardObj: {fileID: 0}
+  axe: {fileID: 1289431419804710, guid: 691b2164212a5394eaeabf51a49ec918, type: 2}
   cardNum: 0
   m_Turn: 0
   m_Phase: 0

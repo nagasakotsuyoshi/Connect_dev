@@ -15,7 +15,7 @@ public class CustomNetworkLobbyManager : NetworkLobbyManager {
         else
             chosenNum = 2;
         GameObject player = Instantiate(spawnPrefabs[0]) as GameObject;
-        player.GetComponent<Player>().chosenNum = chosenNum;
+        player.GetComponent<Player>().m_chosenNum = chosenNum;
         return player;
     }
 
