@@ -29,6 +29,7 @@ public class PhaseButtons : MonoBehaviour {
     void OnDrawClick()
     {
         Debug.Log("OnDrawClick");
-        ClientScene.localPlayers[0].gameObject.GetComponent<Player>().Draw();
+        Player player = ClientScene.localPlayers[0].gameObject.GetComponent<Player>();
+        player.CmdDraw(player.m_chosenNum);
     }
 }
