@@ -5,23 +5,25 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour
 {
+//--------------------------Prameter-----------------------------------------------------------------------
     public GameObject axe;
     public GameObject player1Camera;
     public GameObject player2Camera;
-
     [SyncVar]
-    public int chosenNum;
+    public int m_chosenNum;
+//---------------------------------------------------------------------------------------------------------
 
+//-------------------------Function------------------------------------------------------------------------
     void Start()
     {
-        Debug.Log(chosenNum);
+        Debug.Log(m_chosenNum);
         if (isLocalPlayer)
         {
-            if (chosenNum == 1)
+            if (m_chosenNum == 1)
             {
                 Instantiate(player1Camera);
             }
-            else if (chosenNum == 2)
+            else if (m_chosenNum == 2)
             {
                 Instantiate(player2Camera);
             }
@@ -30,11 +32,19 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        if (isLocalPlayer) { 
+        if (isLocalPlayer) {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 CmdSpawnAxe();
             }
         }
+    }
+
+    //GameControllerのDrawメソッドのコマンド
+    [Command]
+    public void CmdDraw(int playerNum)
+    {
+        GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.Draw(playerNum);
     }
 
     [Command]
@@ -62,4 +72,5 @@ public class Player : NetworkBehaviour
         obj.GetComponent<Item>().parentNetId = netId;
         Debug.Log("Axe Spawned");
     }
+//---------------------------------------------------------------------------------------------------------
 }

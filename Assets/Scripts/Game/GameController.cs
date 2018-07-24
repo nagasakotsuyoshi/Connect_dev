@@ -1,13 +1,42 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
 public class GameController : NetworkBehaviour {
+//--------------------------Prameter-----------------------------------------------------------------------
+    public GameObject m_coverEnemy;  //相手フィールドの操作制御用
+    public GameObject m_coverMe;  //自フィールドの操作制御用
 
-    public GameObject m_coverEnemy;
-    public GameObject m_coverMe;
+    public List<int> m_Deck = new List<int>();  //山札
+    public SyncListInt m_P1Hands = new SyncListInt();  //プレイヤ１の手札数字リスト
+    public List<GameObject> m_P1HandObjs = new List<GameObject>();  //プレイヤ１の手札オブジェクトリスト
+    public SyncListInt m_P2Hands = new SyncListInt();  //プレイヤ２の手札数字リスト
+    public List<GameObject> m_P2HandObjs = new List<GameObject>();  //プレイヤ２の手札オブジェクトリスト
+
+    //----------カードオブジェクト----------------
+    public static GameObject card1;
+    public static GameObject card2;
+    public static GameObject card3;
+    public static GameObject card4;
+    public static GameObject card5;
+    public static GameObject card6;
+    public static GameObject card7;
+    public static GameObject card8;
+    public static GameObject card9;
+    public static GameObject card10;
+    public static GameObject card11;
+    public static GameObject card12;
+    public static GameObject card13;
+    public static GameObject cardJorker;
+    public static GameObject cardObj;
+    //---------------------------------------------
+
+    public static GameObject axe;
+    public int cardNum;
 
     // プレイヤーの種別 
     public enum LocalPlayer
@@ -27,15 +56,18 @@ public class GameController : NetworkBehaviour {
 
     // ローカルクライアントにあるプレイヤーの参照
     public LocalPlayer m_Player = LocalPlayer.None;
-
+    
     // ターン種別Textの参照
     Text m_TurnText;
+//-----------------------------------------------------------------------------------------------------------
 
+//-----------------------------Function----------------------------------------------------------------------
 	void Start () {
         m_TurnText = GameObject.Find("TurnText").GetComponent<Text>();
        if (isServer)
         {
             ChangeTurn(Turn.Player1);
+            InitializeDeck();
         }
 
         if (isClient)
@@ -47,7 +79,7 @@ public class GameController : NetworkBehaviour {
     }
 	
     // Updateはサーバのみで行う
-    [ServerCallback]
+    //[ServerCallback]
 	void Update () {
         if(m_Turn == Turn.Player1)
         {
@@ -73,7 +105,15 @@ public class GameController : NetworkBehaviour {
                     break;
             }
         }
-	}
+
+        // パラメータのデバッグ
+        int i;
+        for (i = 0; i < m_P1Hands.Count; i ++)
+            Debug.Log("p1手札の"+ (i+1) + "番目は" + m_P1Hands[i]);
+        for (i = 0; i < m_P2Hands.Count; i++)
+            Debug.Log("p2手札の" + (i+1) + "番目は" + m_P2Hands[i]);
+        Debug.Log("山札の一番上は" + m_Deck[0]);
+    }
 
     [Client]
     void SetLocalPlayer()
@@ -82,7 +122,7 @@ public class GameController : NetworkBehaviour {
         {
             if (player.isLocalPlayer)
             {
-                switch (player.chosenNum)
+                switch (player.m_chosenNum)
                 {
                     case 1:
                         m_Player = LocalPlayer.Player1;
@@ -96,6 +136,71 @@ public class GameController : NetworkBehaviour {
                 }
             }
         }
+    }
+
+    //山札のシャッフル
+    [Server]
+    void ShuffleDeck()
+    {
+        m_Deck = m_Deck.OrderBy(i => Guid.NewGuid()).ToList();
+    }
+
+    //山札の生成
+    [Server]
+    void InitializeDeck()
+    {
+        for (int i = 0; i < 48; i++)
+        {
+            switch (i%12+1)
+            {
+                case 1:
+                    cardNum = 1;
+                    break;
+                case 2:
+                    cardNum = 2;
+                    break;
+                case 3:
+                    cardNum = 3;
+                    break;
+                case 4:
+                    cardNum = 4;
+                    break;               
+                case 5:
+                    cardNum = 5;
+                    break;
+                case 6:
+                    cardNum = 6;
+                    break;
+                case 7:
+                    cardNum = 7;
+                    break;
+                case 8:
+                    cardNum = 8;
+                    break;
+                case 9:
+                    cardNum = 9;
+                    break;
+                case 10:
+                    cardNum = 10;
+                    break;
+                case 11:
+                    cardNum = 11;
+                    break;
+                case 12:
+                    cardNum = 12;
+                    break;
+                default:
+                    break;
+            }
+            m_Deck.Add(cardNum);
+        }
+        cardNum = 13;
+        m_Deck.Add(cardNum);
+        m_Deck.Add(cardNum);
+        cardNum = 14;
+        m_Deck.Add(cardNum);
+        m_Deck.Add(cardNum);
+        ShuffleDeck();
     }
 
     // ターンの状態を変更する
@@ -126,24 +231,103 @@ public class GameController : NetworkBehaviour {
         
     }
 
+    //操作制御オブジェクトのアクティブ変更
     void CoverChange(Turn turn)
     {
         Debug.Log("coverChange");
-        if(turn == Turn.Player1 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 1)
+        if(turn == Turn.Player1 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().m_chosenNum == 1)
         {
             m_coverMe.SetActive(false);
         }
-        else if(turn == Turn.Player1 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 2)
+        else if(turn == Turn.Player1 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().m_chosenNum == 2)
         {
             m_coverMe.SetActive(true);
         }
-        else if (turn == Turn.Player2 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 1)
+        else if (turn == Turn.Player2 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().m_chosenNum == 1)
         {
             m_coverMe.SetActive(true);
         }
-        else if (turn == Turn.Player2 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().chosenNum == 2)
+        else if (turn == Turn.Player2 && ClientScene.localPlayers[0].gameObject.GetComponent<Player>().m_chosenNum == 2)
         {
             m_coverMe.SetActive(false);
         }
     }
+
+    //山札から一枚引数のプレイヤ手札に移動
+    [Server]
+    public void Draw(int playerNum)
+    {
+        int cardNum = m_Deck[0];
+        m_Deck.RemoveAt(0);
+        if (playerNum == 1)
+        {
+            m_P1Hands.Add(cardNum);
+        }
+        else if (playerNum == 2)
+        {
+            m_P2Hands.Add(cardNum);
+        }
+        SpawnDrawCard(cardNum);
+    }
+
+    //山札から引いたカードのスポーン
+    [Server]
+    void SpawnDrawCard(int num)
+    {
+        Cell cell = GameObject.Find("Hand1").GetComponent<Cell>();
+        NetworkInstanceId netId = cell.GetNetId();
+        GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        switch (num)
+        {
+            case 1:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 2:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 3:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 4:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 5:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 6:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 7:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 8:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 9:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 10:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 11:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 12:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 13:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            case 14:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                break;
+            default:
+                break;
+        }
+        NetworkServer.Spawn(cardObj);
+        cardObj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
+        cardObj.GetComponent<Item>().parentNetId = netId;
+        Debug.Log("Draw card Spawned");
+    }
+//----------------------------------------------------------------------------------------------------------
 }
