@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class Player : NetworkBehaviour
 {
 //--------------------------Prameter-----------------------------------------------------------------------
-    public GameObject axe;
+    public GameObject card;
     public GameObject player1Camera;
     public GameObject player2Camera;
     [SyncVar]
@@ -34,7 +34,7 @@ public class Player : NetworkBehaviour
     {
         if (isLocalPlayer) {
             if (Input.GetKeyDown(KeyCode.Space)) {
-                CmdSpawnAxe();
+                CmdSpawnCard();
             }
         }
     }
@@ -60,9 +60,9 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    void CmdSpawnAxe()
+    void CmdSpawnCard()
     {
-        GameObject obj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject obj = Instantiate<GameObject>(card, new Vector3(0, 0, 0), Quaternion.identity);
         Cell cell = GameObject.Find("BattleCell0").GetComponent<Cell>();
         NetworkInstanceId netId = cell.GetNetId();
         GameObject targetCell = NetworkServer.FindLocalObject(netId);
@@ -70,7 +70,7 @@ public class Player : NetworkBehaviour
         NetworkServer.Spawn(obj);
         obj.GetComponent<Transform>().transform.SetParent(targetCell.transform, false);
         obj.GetComponent<Item>().parentNetId = netId;
-        Debug.Log("Axe Spawned");
+        Debug.Log("Card Spawned");
     }
 //---------------------------------------------------------------------------------------------------------
 }
