@@ -269,16 +269,25 @@ public class GameController : NetworkBehaviour {
         {
             m_P2Hands.Add(cardNum);
         }
-        SpawnDrawCard(cardNum);
+        SpawnDrawCard(playerNum, cardNum);
     }
 
     //山札から引いたカードのスポーン
     [Server]
-    void SpawnDrawCard(int num)
+    void SpawnDrawCard(int playerNum, int num)
     {
-        Cell cell = GameObject.Find("Hand1").GetComponent<Cell>();
+        Cell cell = new Cell();
+        if (playerNum == 1)
+        {
+            cell = GameObject.Find("P1Hands/Hand1").GetComponent<Cell>();
+        }
+        else if(playerNum == 2)
+        {
+            cell = GameObject.Find("P2Hands/Hand1").GetComponent<Cell>();
+        }
         NetworkInstanceId netId = cell.GetNetId();
         GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        //num = 15;
         switch (num)
         {
             case 1:
@@ -324,6 +333,7 @@ public class GameController : NetworkBehaviour {
                 cardObj = Instantiate<GameObject>(cardJoker, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             default:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
         }
         NetworkServer.Spawn(cardObj);
