@@ -411,7 +411,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Cell2d (1)
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -517,6 +517,10 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
+      propertyPath: m_Name
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -625,7 +629,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Cell2d (2)
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -734,7 +738,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Hand1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 61527916397535762, guid: 05ffd2ec22cdc7e4999469b2ab06dac2,
         type: 2}
@@ -955,7 +959,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Cell2d (1)
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -1064,7 +1068,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Cell2d (2)
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -1586,7 +1590,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Cell2d (1)
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -1692,6 +1696,10 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
+      propertyPath: m_Name
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
@@ -1936,7 +1944,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Hand1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 61527916397535762, guid: 05ffd2ec22cdc7e4999469b2ab06dac2,
         type: 2}
@@ -2727,7 +2735,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1956399238695098, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
       propertyPath: m_Name
-      value: Cell2d (1)
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05ffd2ec22cdc7e4999469b2ab06dac2, type: 2}
