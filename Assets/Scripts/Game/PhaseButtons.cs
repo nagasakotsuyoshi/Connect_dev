@@ -13,6 +13,7 @@ public class PhaseButtons : MonoBehaviour {
         // ボタンオブジェクトの参照を取得
         m_EndPhaseButton = GameObject.Find("EndPhaseButton");
         m_DrawButton = GameObject.Find("DrawButton");
+        Debug.Log(m_DrawButton);
 
         // ボタンが押された時の処理を登録
         m_EndPhaseButton.GetComponent<Button>().onClick.AddListener(() => OnEndClick(Phase.End));

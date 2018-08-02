@@ -50,8 +50,8 @@ TagManager:
   - name: cells
     uniqueID: 3525574777
     locked: 0
-  - name: cards
-    uniqueID: 247336329
+  - name: Cards
+    uniqueID: 396498153
     locked: 0
   - name: Items
     uniqueID: 3421057871

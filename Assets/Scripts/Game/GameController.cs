@@ -18,24 +18,24 @@ public class GameController : NetworkBehaviour {
     public List<GameObject> m_P2HandObjs = new List<GameObject>();  //プレイヤ２の手札オブジェクトリスト
 
     //----------カードオブジェクト----------------
-    public static GameObject card1;
-    public static GameObject card2;
-    public static GameObject card3;
-    public static GameObject card4;
-    public static GameObject card5;
-    public static GameObject card6;
-    public static GameObject card7;
-    public static GameObject card8;
-    public static GameObject card9;
-    public static GameObject card10;
-    public static GameObject card11;
-    public static GameObject card12;
-    public static GameObject card13;
-    public static GameObject cardJorker;
-    public static GameObject cardObj;
+    public GameObject card1;
+    public GameObject card2;
+    public GameObject card3;
+    public GameObject card4;
+    public GameObject card5;
+    public GameObject card6;
+    public GameObject card7;
+    public GameObject card8;
+    public GameObject card9;
+    public GameObject card10;
+    public GameObject card11;
+    public GameObject card12;
+    public GameObject card13;
+    public GameObject cardJoker;
+    public GameObject cardObj;
     //---------------------------------------------
 
-    public static GameObject axe;
+    public GameObject axe;
     public int cardNum;
 
     // プレイヤーの種別 
@@ -105,14 +105,16 @@ public class GameController : NetworkBehaviour {
                     break;
             }
         }
-
-        // パラメータのデバッグ
-        int i;
-        for (i = 0; i < m_P1Hands.Count; i ++)
-            Debug.Log("p1手札の"+ (i+1) + "番目は" + m_P1Hands[i]);
-        for (i = 0; i < m_P2Hands.Count; i++)
-            Debug.Log("p2手札の" + (i+1) + "番目は" + m_P2Hands[i]);
-        Debug.Log("山札の一番上は" + m_Deck[0]);
+        if (isServer)
+        {
+            // パラメータのデバッグ
+            int i;
+            for (i = 0; i < m_P1Hands.Count; i++)
+                Debug.Log("p1手札の" + (i + 1) + "番目は" + m_P1Hands[i]);
+            for (i = 0; i < m_P2Hands.Count; i++)
+                Debug.Log("p2手札の" + (i + 1) + "番目は" + m_P2Hands[i]);
+            Debug.Log("山札の一番上は" + m_Deck[0]);
+        }
     }
 
     [Client]
@@ -267,61 +269,71 @@ public class GameController : NetworkBehaviour {
         {
             m_P2Hands.Add(cardNum);
         }
-        SpawnDrawCard(cardNum);
+        SpawnDrawCard(playerNum, cardNum);
     }
 
     //山札から引いたカードのスポーン
     [Server]
-    void SpawnDrawCard(int num)
+    void SpawnDrawCard(int playerNum, int num)
     {
-        Cell cell = GameObject.Find("Hand1").GetComponent<Cell>();
+        Cell cell = new Cell();
+        if (playerNum == 1)
+        {
+            cell = GameObject.Find("P1Hands/Hand1").GetComponent<Cell>();
+        }
+        else if(playerNum == 2)
+        {
+            cell = GameObject.Find("P2Hands/Hand1").GetComponent<Cell>();
+        }
         NetworkInstanceId netId = cell.GetNetId();
         GameObject targetCell = NetworkServer.FindLocalObject(netId);
+        //num = 15;
         switch (num)
         {
             case 1:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card1, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 2:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card2, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 3:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card3, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 4:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card4, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 5:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card5, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 6:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card6, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 7:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card7, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 8:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card8, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 9:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card9, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 10:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card10, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 11:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card11, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 12:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card12, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 13:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(card13, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             case 14:
-                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
+                cardObj = Instantiate<GameObject>(cardJoker, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
             default:
+                cardObj = Instantiate<GameObject>(axe, new Vector3(0, 0, 0), Quaternion.identity);
                 break;
         }
         NetworkServer.Spawn(cardObj);

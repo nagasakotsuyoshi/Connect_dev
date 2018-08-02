@@ -45,6 +45,7 @@ public class Player : NetworkBehaviour
     {
         GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.Draw(playerNum);
+        Debug.Log("CmdDraw");
     }
 
     [Command]
