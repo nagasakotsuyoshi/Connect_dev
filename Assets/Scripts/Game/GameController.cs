@@ -59,14 +59,17 @@ public class GameController : NetworkBehaviour {
     
     // ターン種別Textの参照
     Text m_TurnText;
+    Text m_PhaseText;
 //-----------------------------------------------------------------------------------------------------------
 
 //-----------------------------Function----------------------------------------------------------------------
 	void Start () {
         m_TurnText = GameObject.Find("TurnText").GetComponent<Text>();
-       if (isServer)
+        m_PhaseText = GameObject.Find("PhaseText").GetComponent<Text>();
+        if (isServer)
         {
             ChangeTurn(Turn.Player1);
+            ChangePhase(Phase.Draw);
             InitializeDeck();
         }
 
@@ -74,6 +77,7 @@ public class GameController : NetworkBehaviour {
         {
             SetLocalPlayer();
             OnTurnChanged(m_Turn);
+            OnPhaseChanged(m_Phase);
 
         }
     }
@@ -230,7 +234,7 @@ public class GameController : NetworkBehaviour {
 
     void OnPhaseChanged(Phase phase)
     {
-        
+        m_PhaseText.text = phase + "";
     }
 
     //操作制御オブジェクトのアクティブ変更

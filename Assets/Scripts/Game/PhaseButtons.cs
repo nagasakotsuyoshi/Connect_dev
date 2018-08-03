@@ -17,7 +17,7 @@ public class PhaseButtons : MonoBehaviour {
 
         // ボタンが押された時の処理を登録
         m_EndPhaseButton.GetComponent<Button>().onClick.AddListener(() => OnEndClick(Phase.End));
-        m_DrawButton.GetComponent<Button>().onClick.AddListener(() => OnDrawClick());
+        m_DrawButton.GetComponent<Button>().onClick.AddListener(() => OnDrawClick(Phase.UseCard));
     }
 
     //ボタンが押された時の処理
@@ -27,9 +27,10 @@ public class PhaseButtons : MonoBehaviour {
         ClientScene.localPlayers[0].gameObject.GetComponent<Player>().CmdChangePhase(phase);
     }
 
-    void OnDrawClick()
+    void OnDrawClick(Phase phase)
     {
         Debug.Log("OnDrawClick");
+        ClientScene.localPlayers[0].gameObject.GetComponent<Player>().CmdChangePhase(phase);
         Player player = ClientScene.localPlayers[0].gameObject.GetComponent<Player>();
         player.CmdDraw(player.m_chosenNum);
     }
