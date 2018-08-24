@@ -111,6 +111,25 @@ public class GameController : NetworkBehaviour {
                     break;
             }
         }
+
+      /*マウスクリックのデバッグ */
+        //メインカメラ上のマウスカーソルのある位置からRayを飛ばす
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        //レイヤーマスク作成
+        //int layerMask = LayerMaskNo.DEFAULT;
+
+        //Rayの長さ
+        //float maxDistance = 10;
+
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+        //なにかと衝突した時だけそのオブジェクトの名前をログに出す
+        if (hit.collider)
+        {
+            Debug.Log(hit.collider.gameObject.name);
+        }
+
+        /*
         if (isServer)
         {
             // パラメータのデバッグ
@@ -121,6 +140,7 @@ public class GameController : NetworkBehaviour {
                 Debug.Log("p2手札の" + (i + 1) + "番目は" + m_Hands2[i]);
             Debug.Log("山札の一番上は" + m_Deck[0]);
         }
+        */
     }
 
     [Client]
