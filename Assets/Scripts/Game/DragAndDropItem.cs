@@ -66,7 +66,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             iconRect.pivot = new Vector2(0.5f, 0.5f);
             iconRect.anchorMin = new Vector2(0.5f, 0.5f);
             iconRect.anchorMax = new Vector2(0.5f, 0.5f);
-            iconRect.sizeDelta = new Vector2(myRect.size.x, myRect.size.y);
+            iconRect.sizeDelta = new Vector2(myImage.size.x, myImage.size.y);
 
             if (OnItemDragStartEvent != null)
             {
